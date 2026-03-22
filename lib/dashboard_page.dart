@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
+import 'goal_page.dart';
 
 class DashboardPage extends StatefulWidget {
   final String userId;
@@ -326,8 +327,20 @@ class _DashboardPageState extends State<DashboardPage> {
       showUnselectedLabels: false,
 
       onTap: (index) {
-        if (index == 4) {
-          Navigator.push(
+        if (index == 0) {
+          // already on Dashboard → do nothing
+          return;
+        } 
+        else if (index == 3) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalPage(userId: widget.userId),
+            ),
+          );
+        } 
+        else if (index == 4) {
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (_) => ProfilePage(userId: widget.userId),
@@ -335,6 +348,7 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         }
       },
+      
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),

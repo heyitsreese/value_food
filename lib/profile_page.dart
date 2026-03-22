@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'dashboard_page.dart';
 import 'edit_profile_page.dart';
 import 'login_page.dart';
+import 'goal_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId;
@@ -414,6 +415,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
+
+        else if (index == 3) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalPage(userId: widget.userId),
+            ),
+          );
+        } 
       },
 
       items: const [
