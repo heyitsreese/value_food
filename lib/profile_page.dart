@@ -166,23 +166,62 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () async {
             // Optional confirmation
             bool confirm = await showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text("Logout"),
-                    content: const Text("Are you sure you want to logout?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text("Cancel"),
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => Dialog(
+                backgroundColor: Colors.transparent,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text("Logout"),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Are you sure you want to logout?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
                       ),
+                      const SizedBox(height: 20),
+
+                      // Buttons row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text(
+                              "Cancel",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              "Logout",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                ) ??
-                false;
+                ),
+              ),
+            ) ?? false;
 
             if (confirm) {
               logout();
