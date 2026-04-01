@@ -6,6 +6,9 @@ import 'dashboard_page.dart';
 import 'edit_profile_page.dart';
 import 'login_page.dart';
 
+import 'scanner_page.dart';
+import 'goals_page.dart';
+
 class ProfilePage extends StatefulWidget {
   final String userId;
 
@@ -372,6 +375,21 @@ class _ProfilePageState extends State<ProfilePage> {
             context,
             MaterialPageRoute(
               builder: (_) => DashboardPage(userId: widget.userId),
+            ),
+          );
+        }
+        if (index == 2){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ScannerPage(userId: widget.userId),
+            ),
+          );
+        }
+        if (index==3){
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (_) => GoalsPage(userId: widget.userId),
             ),
           );
         }

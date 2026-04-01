@@ -4,6 +4,9 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
 
+import 'scanner_page.dart';
+import 'goals_page.dart';
+
 class DashboardPage extends StatefulWidget {
   final String userId;
 
@@ -326,6 +329,27 @@ class _DashboardPageState extends State<DashboardPage> {
       showUnselectedLabels: false,
 
       onTap: (index) {
+        // go to scanner page
+        if (index == 2){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ScannerPage(userId: widget.userId),
+            ),
+          );
+        }
+
+        // go to goals page
+         if (index == 3){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalsPage(userId: widget.userId),
+            ),
+          );
+        }
+
+        // go to profile page
         if (index == 4) {
           Navigator.push(
             context,
