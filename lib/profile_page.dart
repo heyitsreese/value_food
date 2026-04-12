@@ -7,7 +7,9 @@ import 'edit_profile_page.dart';
 import 'login_page.dart';
 
 import 'scanner_page.dart';
-import 'goals_page.dart';
+//import 'goals_page.dart';
+import 'goals_info_page.dart';
+import 'budget_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String userId;
@@ -378,6 +380,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
+          if (index == 1){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => BudgetPage(userId: widget.userId),
+            ),
+          );
+        }
+
         if (index == 2){
           Navigator.push(
             context,
@@ -389,7 +399,7 @@ class _ProfilePageState extends State<ProfilePage> {
         if (index==3){
           Navigator.push(
             context, 
-            MaterialPageRoute(builder: (_) => GoalsPage(userId: widget.userId),
+            MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId),
             ),
           );
         }

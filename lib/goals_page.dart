@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-
 import 'profile_page.dart';
-import 'add_transaction_page.dart';
 
 import 'dashboard_page.dart';
 import 'scanner_page.dart';
+import 'goals_info_page.dart';
+import 'budget_page.dart';
 
 class GoalsPage extends StatefulWidget {
   final String userId;
@@ -20,19 +20,64 @@ class GoalsPage extends StatefulWidget {
 
 class _GoalsPageState extends State<GoalsPage> {
   double weight = 0;
+  double targetWeight = 0;
+  String targetDate = "";
 
-  double desiredWeight = 0;
-  String targetDate = "DD/MM/YYYY";
+  final targetWeightController = TextEditingController();
+  final targetDateController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    loadGoalsData();
+    loadGoalData();
   }
 
-  Future<void> loadGoalsData() async {}
+  Future<void> loadGoalData() async {
+    final userDoc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.userId)
+            .get();
 
-  Future<void> saveGoal() async {}
+    final data = userDoc.data();
+    if (data != null) {
+      setState(() {
+        weight = (data['weight'] ?? 0).toDouble();
+        targetWeight = (data['targetWeight'] ?? 0).toDouble();
+      });
+    }
+  }
+
+  Future<void> saveGoalsData() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userId)
+        .update({
+          'targetWeight': double.tryParse(targetWeightController.text) ?? 0,
+          'targetDate': targetDate,
+        });
+
+    if (targetWeightController.text.isEmpty ||
+        targetDateController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Please fill all fields")));
+      return;
+    }
+
+    // if all fields r filled go to the goals info page
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId)),
+    // );
+
+    setState(() {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId)),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,30 +92,32 @@ class _GoalsPageState extends State<GoalsPage> {
           ),
         ),
         child: SafeArea(
-          // onRefresh: loadDashboardData,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildHeader(),
-                        const SizedBox(height: 20),
-                        _buildGoalsCard(),
-                        const SizedBox(height: 20),
-                        // _buildRecentActivity(),
-                        // const SizedBox(height: 20),
-                      ],
+          child: RefreshIndicator(
+            onRefresh: loadGoalData,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildHeader(),
+                          const SizedBox(height: 20),
+                          _buildGoalsCard(),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -121,7 +168,7 @@ class _GoalsPageState extends State<GoalsPage> {
             style: TextStyle(
               fontSize: 16,
               color: Color.fromRGBO(0, 0, 0, 1),
-              fontWeight: FontWeight.bold
+              fontWeight: FontWeight.bold,
             ),
           ),
 
@@ -134,15 +181,14 @@ class _GoalsPageState extends State<GoalsPage> {
               // borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              'Current Weight: \n 150 lbs', //test
+              'Current Weight: \n $weight lbs', //test
               style: const TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1B5E20),
               ),
-            )
-
+            ),
           ),
 
           const SizedBox(height: 20),
@@ -157,6 +203,7 @@ class _GoalsPageState extends State<GoalsPage> {
           const SizedBox(height: 10, width: 50),
           // desired weight box
           TextFormField(
+            controller: targetWeightController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Color.fromARGB(255, 227, 225, 225),
@@ -178,8 +225,9 @@ class _GoalsPageState extends State<GoalsPage> {
             ),
           ),
           const SizedBox(height: 10, width: 50),
-          // desired weight box
+          // target date box
           TextFormField(
+            controller: targetDateController,
             decoration: InputDecoration(
               filled: true,
               fillColor: Color.fromARGB(255, 227, 225, 225),
@@ -204,7 +252,8 @@ class _GoalsPageState extends State<GoalsPage> {
                   borderRadius: BorderRadius.circular(7),
                 ),
               ),
-              onPressed: saveGoal,
+              // goes to goals info page
+              onPressed: saveGoalsData,
               child: const Text(
                 "Save Goal",
                 style: TextStyle(color: Colors.white, fontSize: 16),
@@ -234,6 +283,16 @@ class _GoalsPageState extends State<GoalsPage> {
             ),
           );
         }
+
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BudgetPage(userId: widget.userId),
+            ),
+          );
+        }
+
         if (index == 2) {
           Navigator.push(
             context,
@@ -243,7 +302,7 @@ class _GoalsPageState extends State<GoalsPage> {
           );
         }
 
-         if (index == 4) {
+        if (index == 4) {
           Navigator.push(
             context,
             MaterialPageRoute(
