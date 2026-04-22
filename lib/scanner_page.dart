@@ -1,29 +1,67 @@
+import 'dart:convert';
+
 import 'package:barcode_scanner/scanbot_barcode_sdk.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// for food database api
+import 'package:openfoodfacts/openfoodfacts.dart';
+
+// for getting the api
+//import 'package:http/http.dart' as http;
 
 class ScannerPage extends StatefulWidget {
   final String userId;
+  
 
   const ScannerPage({super.key, required this.userId});
   @override
   State<ScannerPage> createState() => _ScannerPageState();
 }
 
+
 Future<void> _initScanbotSdk() async {
   var config = SdkConfiguration(licenseKey: "", loggingEnabled: true);
 
   await ScanbotBarcodeSdk.initialize(config);
+
+
+  // user agent for open food facts 
+  //   OpenFoodAPIConfiguration.userAgent = UserAgent(
+  //   name: 'ValueFood',
+  // );
+
+  // OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
+  //   OpenFoodFactsLanguage.ENGLISH,
+  // ];
+
+  
+
 }
+
+    
 
 class _ScannerPageState extends State<ScannerPage> {
   @override
   void initState() {
     super.initState();
     _initScanbotSdk();
+
+    
+
   }
+
+// test for api
+  //  Future<Product> fetchProduct() async {
+  //   final response = await http.get(Uri.parse('https://world.openfoodfacts.net/api/v2/product/{barcode}?fields=product_name'));
+
+  //   if (response.statusCode == 200){
+  //     return Product.fromJson(jsonDecode(response.body));
+  //   } else {
+  //     throw Exception("Failed to get product..");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +70,20 @@ class _ScannerPageState extends State<ScannerPage> {
       body: Center(
         child: ElevatedButton(
           onPressed: _startBarcodeScanning,
+          // onPressed: () {
+          //tested if it fetches a product, it returns null
+          //   fetchProduct().then((value) {
+          //     print(value.product_name);
+          //   });
+          // },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
             textStyle: const TextStyle(fontSize: 18),
           ),
           child: const Text("Start single-barcode scanning"),
+
         ),
       ),
-
     );
   }
 
@@ -51,14 +95,14 @@ class _ScannerPageState extends State<ScannerPage> {
     // BarcodeScannerScreenConfiguration(),
     var result = await ScanbotBarcodeSdk.barcode.startScanner(configuration);
 
-    if (result is Ok<BarcodeScannerUiResult>) {
-      //ScanbotAlertDialog();
-    }
+    
 
-  
+    if (result is Ok<BarcodeScannerUiResult>) {
+    
+    }
   }
 
-
+  // to add overlay
   BarcodeScannerScreenConfiguration rtuUiSingleScanningUseCase() {
     // Create the default configuration object.
     var configuration = BarcodeScannerScreenConfiguration();
@@ -74,6 +118,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
     // Configure the barcode title of the confirmation sheet.
     scanningMode.barcodeTitle.visible = true;
+    
     scanningMode.barcodeTitle.color = ScanbotColor("#000000");
 
     // Configure the barcode subtitle of the confirmation sheet.
@@ -91,50 +136,26 @@ class _ScannerPageState extends State<ScannerPage> {
     scanningMode.submitButton.background.fillColor = ScanbotColor("#C8193C");
 
     // Configure other parameters, pertaining to single-scanning mode as needed.
+    
 
     configuration.useCase = scanningMode;
-
-    // Configure other parameters as needed.
+   
 
     return configuration;
   }
-
-  Future<List<dynamic>> handleScanningResultWithDataParsers(
-    BuildContext context) async {
-  // Start the barcode RTU UI with default configuration
-  final scanningResult = await ScanbotBarcodeSdk.barcode.startScanner(
-    BarcodeScannerScreenConfiguration(),
-  );
-
-  // Check if the status returned is ok and that the data is present
-  if (scanningResult is Ok<BarcodeScannerUiResult>) {
-    final items = scanningResult.value.items;
-    final parsedData = <dynamic>[];
-
-    // Loop through the scanned barcode items and extract the desired barcode data
-    for (final item in items) {
-      final genericDocument = item.barcode.extractedDocument;
-      if (genericDocument == null) continue;
-
-      final typeName = genericDocument.type.name;
-
-      switch (typeName) {
-
-        case GS1.DOCUMENT_TYPE:
-          final gs1Elements = GS1(genericDocument).elements;
-          parsedData.add(gs1Elements.isNotEmpty
-              ? gs1Elements.first.applicationIdentifier
-              : null);
-          break;
-      }
-    }
-
-    return parsedData;
-  } else {
-    // await showAlertDialog(context, title: "Info", scanningResult.toString());
-  }
-
-  return [];
-}
 }
 
+// test for api
+// class Product {
+//   final String product_name;
+//   final String code;
+
+//   const Product({required this.product_name, required this.code, });
+
+//   factory Product.fromJson(Map<String, dynamic> json){
+//     return Product(
+//       product_name: json['product_name'],
+//       code: json['code']
+//     );
+//   }
+// }

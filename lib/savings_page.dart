@@ -91,7 +91,7 @@ class _SavingsPageState extends State<SavingsPage> {
                           _buildSavingsCard(),
                           //Text('$selectedDate'.split(' ')[0]),
                           const SizedBox(height: 15),
-                          Text('Spending Calendar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,)),
+
                           Divider(),
                           Container(
                             padding: const EdgeInsets.all(40),
@@ -106,15 +106,44 @@ class _SavingsPageState extends State<SavingsPage> {
                                 ),
                               ],
                             ),
-                            child: CalendarDatePicker(
-                              initialDate: selectedDate,
-                              firstDate: firstDate,
-                              lastDate: lastDate,
-                              onDateChanged: (newDate) {},
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Spending Calendar ',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                CalendarDatePicker(
+                                  initialDate: selectedDate,
+                                  firstDate: firstDate,
+                                  lastDate: lastDate,
+
+                                  onDateChanged: (newDate) {
+                                    setState(() {
+                                      selectedDate = newDate;
+                                    });
+                                  },
+                                ),
+
+                                Text(
+                                  selectedDate != null
+                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
+                                      : 'No date selected',
+                                ),
+                              ],
+                              // child: CalendarDatePicker(
+
+                              //   initialDate: selectedDate,
+                              //   firstDate: firstDate,
+                              //   lastDate: lastDate,
+                              //   onDateChanged: (newDate) {},
+                              // ),
                             ),
                           ),
                           const SizedBox(height: 20),
-                           _buildAddExpense()
+                          _buildAddExpense(),
                         ],
                       ),
                     ),
@@ -154,8 +183,8 @@ class _SavingsPageState extends State<SavingsPage> {
 
   Widget _buildButtons() {
     return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10),
+      //color: Colors.white,
+      //padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           const SizedBox(width: 20),
@@ -163,6 +192,7 @@ class _SavingsPageState extends State<SavingsPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(23),
             ),
             onPressed: () async {
               await Navigator.pushReplacement(
@@ -181,11 +211,12 @@ class _SavingsPageState extends State<SavingsPage> {
               ),
             ),
           ),
-          const SizedBox(width: 120),
+          const SizedBox(width: 40),
           TextButton(
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(23),
             ),
             onPressed: () async {
               await Navigator.pushReplacement(
@@ -243,7 +274,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   final result = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => GoalsPage(userId: widget.userId),
+                      builder: (_) => SavingsPage(userId: widget.userId),
                     ),
                   );
                 },
@@ -346,11 +377,13 @@ class _SavingsPageState extends State<SavingsPage> {
           ),
         ],
       ),
-      child: Row (children: [
-        Text('Add Expense'),
-        const SizedBox(width: 215),
-        const Icon(Icons.add, color: Colors.black, size: 20),
-      ],)
+      child: Row(
+        children: [
+          Text('Add Expense'),
+          const SizedBox(width: 215),
+          const Icon(Icons.add, color: Colors.black, size: 20),
+        ],
+      ),
     );
   }
 
@@ -391,10 +424,11 @@ class _SavingsPageState extends State<SavingsPage> {
           );
         }
 
-         if (index==3){
+        if (index == 3) {
           Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId),
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalsInfoPage(userId: widget.userId),
             ),
           );
         }
@@ -412,7 +446,7 @@ class _SavingsPageState extends State<SavingsPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],

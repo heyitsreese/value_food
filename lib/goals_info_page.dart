@@ -450,7 +450,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],

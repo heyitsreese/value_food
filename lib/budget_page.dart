@@ -119,8 +119,8 @@ class _BudgetPageState extends State<BudgetPage> {
 
   Widget _buildButtons() {
     return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.all(10),
+      //color: Colors.white,
+      //padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           const SizedBox(width: 20),
@@ -128,6 +128,7 @@ class _BudgetPageState extends State<BudgetPage> {
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(23),
             ),
             onPressed: null,
             child: const Text(
@@ -137,14 +138,16 @@ class _BudgetPageState extends State<BudgetPage> {
                 color: Color.fromRGBO(0, 0, 0, 1),
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
+                
               ),
             ),
           ),
-          const SizedBox(width: 120),
+          const SizedBox(width: 40),
           TextButton(
             style: TextButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(23),
             ),
             onPressed: () async {
                    await Navigator.push(
@@ -347,7 +350,7 @@ class _BudgetPageState extends State<BudgetPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
+     BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],
