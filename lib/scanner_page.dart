@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // for food database api
-import 'package:openfoodfacts/openfoodfacts.dart';
+//import 'package:openfoodfacts/openfoodfacts.dart';
 
 // for getting the api
 //import 'package:http/http.dart' as http;

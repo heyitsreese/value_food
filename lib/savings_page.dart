@@ -26,6 +26,7 @@ class _SavingsPageState extends State<SavingsPage> {
   double remaining = 0;
 
   double spent = 0;
+  double spentToday = 300;
 
   double get progress => remaining == 0 ? 0 : remaining / spent;
   double get progressPercent => (progress * 100).roundToDouble();
@@ -128,9 +129,17 @@ class _SavingsPageState extends State<SavingsPage> {
                                 ),
 
                                 Text(
-                                  selectedDate != null
-                                      ? '${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}'
-                                      : 'No date selected',
+                                  'Date: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} \n\nSpendings: ₱200',
+                                ),
+
+                                Text(
+                                  "Low Spendings",
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 71, 188, 79),
+                                  ),
                                 ),
                               ],
                               // child: CalendarDatePicker(
@@ -144,6 +153,8 @@ class _SavingsPageState extends State<SavingsPage> {
                           ),
                           const SizedBox(height: 20),
                           _buildAddExpense(),
+                          const SizedBox(height: 20),
+                          //_buildExpenseInput()
                         ],
                       ),
                     ),
@@ -387,6 +398,24 @@ class _SavingsPageState extends State<SavingsPage> {
     );
   }
 
+  Widget _buildExpenseInput() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText:
+            "Enter Spending for ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+        fillColor: Colors.white,
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(25.0),
+          borderSide: BorderSide(),
+        ),
+      ),
+
+      keyboardType: TextInputType.numberWithOptions(),
+      style: TextStyle(fontFamily: "Poppins"),
+    );
+  }
+
   Widget _buildBottomNav() {
     return BottomNavigationBar(
       currentIndex: 1,
@@ -446,7 +475,10 @@ class _SavingsPageState extends State<SavingsPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code_scanner, size: 40),
+          label: "",
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],
