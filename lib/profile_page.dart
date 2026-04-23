@@ -6,6 +6,12 @@ import 'dashboard_page.dart';
 import 'edit_profile_page.dart';
 import 'login_page.dart';
 
+import 'scanner_page.dart';
+//import 'goals_page.dart';
+import 'goals_info_page.dart';
+import 'budget_page.dart';
+
+
 class ProfilePage extends StatefulWidget {
   final String userId;
 
@@ -13,7 +19,10 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+  
+  
 }
+
 
 class _ProfilePageState extends State<ProfilePage> {
   String firstName = "";
@@ -375,12 +384,35 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
+          if (index == 1){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => BudgetPage(userId: widget.userId),
+            ),
+          );
+        }
+
+        if (index == 2){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ScannerPage(userId: widget.userId),
+            ),
+          );
+        }
+        if (index==3){
+          Navigator.push(
+            context, 
+            MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId),
+            ),
+          );
+        }
       },
 
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
+       BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],

@@ -4,6 +4,12 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
 
+import 'scanner_page.dart';
+import 'goals_page.dart';
+import 'goals_info_page.dart';
+
+import 'budget_page.dart';
+
 class DashboardPage extends StatefulWidget {
   final String userId;
 
@@ -326,6 +332,36 @@ class _DashboardPageState extends State<DashboardPage> {
       showUnselectedLabels: false,
 
       onTap: (index) {
+        // go to budget page
+        if (index == 1){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => BudgetPage(userId: widget.userId),
+            ),
+          );
+        }
+      
+        // go to scanner page
+        if (index == 2){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ScannerPage(userId: widget.userId),
+            ),
+          );
+        }
+
+        // go to goals page
+         if (index == 3){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalsInfoPage(userId: widget.userId),
+            ),
+          );
+        }
+
+        // go to profile page
         if (index == 4) {
           Navigator.push(
             context,
@@ -338,7 +374,7 @@ class _DashboardPageState extends State<DashboardPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
+       BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],
