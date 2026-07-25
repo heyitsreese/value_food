@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 
 import 'dashboard_page.dart';
-import 'scanner_page.dart';
 
 import 'goals_page.dart';
 import 'savings_page.dart';
@@ -324,7 +323,8 @@ class _BudgetPageState extends State<BudgetPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ScannerPage(userId: widget.userId),
+              //switch
+              builder: (_) => BudgetPage(userId: widget.userId),
             ),
           );
         }

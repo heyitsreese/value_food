@@ -28,8 +28,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.value_food_demo"
-        minSdk = 23
-        targetSdk = 35
+        minSdk = flutter.minSdkVersion
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }

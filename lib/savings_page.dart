@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
 
-import 'scanner_page.dart';
 import 'goals_page.dart';
 import 'goals_info_page.dart';
 import 'dashboard_page.dart';
@@ -448,7 +447,8 @@ class _SavingsPageState extends State<SavingsPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ScannerPage(userId: widget.userId),
+              // switch to nutri label page
+              builder: (_) => SavingsPage(userId: widget.userId),
             ),
           );
         }

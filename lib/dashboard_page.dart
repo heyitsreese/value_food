@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
 
-import 'scanner_page.dart';
 import 'goals_page.dart';
 import 'goals_info_page.dart';
 
@@ -346,7 +345,8 @@ class _DashboardPageState extends State<DashboardPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ScannerPage(userId: widget.userId),
+              //switch
+              builder: (_) => BudgetPage(userId: widget.userId),
             ),
           );
         }

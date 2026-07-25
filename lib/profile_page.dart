@@ -6,10 +6,10 @@ import 'dashboard_page.dart';
 import 'edit_profile_page.dart';
 import 'login_page.dart';
 
-import 'scanner_page.dart';
 //import 'goals_page.dart';
 import 'goals_info_page.dart';
 import 'budget_page.dart';
+import 'label_page.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -396,7 +396,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ScannerPage(userId: widget.userId),
+              builder: (_) => LabelPage(userId: widget.userId),
             ),
           );
         }
