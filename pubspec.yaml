@@ -15,6 +15,9 @@ dependencies:
   #added for scanner
   #
 
+  # added for python bridge
+  # flutter_python_bridge: ^0.2.0
+
 
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.0
@@ -22,8 +25,6 @@ dependencies:
 
   intl: ^0.18.1
 
-  # to remove
-  #
 
   # for image to text
   google_mlkit_text_recognition: ^0.15.1
@@ -46,6 +47,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/logo.png
     - assets/products.json  
 

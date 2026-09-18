@@ -4,6 +4,9 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+// for python
+// import 'package:flutter_python_bridge/flutter_python_bridge.dart';
+
 class RecognizeResult {
   final String imagePath;
   final String text;
@@ -27,15 +30,22 @@ class _LabelPageState extends State<LabelPage> {
   XFile? _imageFile;
   bool _isProcessing = false;
   File? selectedImage;
+  var testResult = '';
 
   //serving Info is the header, the first 4 lines of a nutritional label starting from Nutrition
   var _servingInfo;
   var servingRegex = RegExp(r'\Nutrition(.*\n){4}', caseSensitive: false);
 
-  // calories + the amount , add separate regex for calories num
+  // calories + the amount , maybe add separate regex for calories num
   var _caloriesInfo;
   var caloriesRegex = RegExp(
     r'\Calories \d+|Calories \Wkcal\W \d+',
+    caseSensitive: false,
+  );
+
+  var _energy;
+  var energyRegex = RegExp(
+    r'(?<=Energy)(.*\d)|(?<=Energy)(.*O)',
     caseSensitive: false,
   );
 
@@ -92,7 +102,7 @@ class _LabelPageState extends State<LabelPage> {
   //dietary fiber num
   var _dietaryfiberNum = 'r';
   var dietaryFiberNumRegex = RegExp(
-    r'(?<=Dietary Fiber)(.*\d)|(?<=Dietary Fiber)(.*O)|(?<=Dletary Fiber)',
+    r'(?<=Dietary Fiber)(.*\d)|(?<=Dietary Fiber)(.*O)|(?<=Dletary Fiber)(.*\d)',
     caseSensitive: false,
   );
 
@@ -119,6 +129,7 @@ class _LabelPageState extends State<LabelPage> {
   // Philippines uses RENI on nutritional labels but some use Daily Value % too and some also have both RENI and DV%
   // regex to find text that starts with digit(s) or '<' and has percentage next to it
   //var reniRegex = RegExp(r'\.*^\d+%|\.*^<\d+%', caseSensitive: false);
+
   //for now using this regex for testing since other one wasnt working
   var reniRegex = RegExp(r'\d+%', caseSensitive: false);
 
@@ -136,25 +147,20 @@ class _LabelPageState extends State<LabelPage> {
   var _sodiumReni;
   var _totalCarbReni;
 
-  // Daily Value
-  // var DVList;
-  // var _fatDV;
-  // var _satFatDV;
-  // var _cholesterolDV;
-  // var _sodiumDV;
-  // var _totalCarbDV;
-  // var _dietaryFiberDV;
-  //var DVRegex = RegExp(r'\.*^\d+%|\.*^<\d+%', caseSensitive: false);
-  // var DVRegex = RegExp(r'\d+%', caseSensitive: false);
-
-// for when calories number is on the very right 
+  // for when calories number is on the very right
   var caloriesRegex2 = RegExp(r'(?<=[^\w ])\d+(?=\n)', caseSensitive: false);
-  var _caloriesTest;
+
+  var highProtein = ' ';
+  var highFiber = ' ';
+  var highSatFat = ' ';
+  var score = 0;
+  var recommendation = ' ';
 
   @override
   void initState() {
     super.initState();
     loadLabelData();
+    // runPythonExample();
   }
 
   @override
@@ -213,6 +219,7 @@ class _LabelPageState extends State<LabelPage> {
         var sugarsNumMatch = sugarsNumRegex.firstMatch(_recognizedText);
         var proteinMatch = proteinRegex.firstMatch(_recognizedText);
         var proteinNumMatch = proteinNumRegex.firstMatch(_recognizedText);
+        var energyMatch = energyRegex.firstMatch(_recognizedText);
 
         // reni stuff
         reniList =
@@ -224,8 +231,9 @@ class _LabelPageState extends State<LabelPage> {
 
         var lowercaseLabel = _recognizedText.toLowerCase();
 
-        // check if label uses RENI or DV 
-        if (lowercaseLabel.contains('daily value') || _recognizedText.contains('dv')) {
+        // check if label uses RENI or DV
+        if (lowercaseLabel.contains('daily value') ||
+            _recognizedText.contains('dv')) {
           print('Daily Value Label');
           // daily value labels usually have value for all except trans fat, sugars , and protein
           // labels also usually have 9-10 percentages, besides total fat, sat fat, cholesterol, sodium, total card, dietary fiber theres vitamin A, potassium
@@ -253,12 +261,11 @@ class _LabelPageState extends State<LabelPage> {
             //
           }
           // if its RENI label
-           // for now we can assume if the nutrition label has 2 percentages for the RENI, it will be for these nutrient values.
-           //however some labels with 2 percentages has one for energy instead of calories
-           // for juices its usually reni % for Calories, Dietary Fiber, Protein and others like Vitamin A
+          // for now we can assume if the nutrition label has 2 percentages for the RENI, it will be for these nutrient values.
+          //however some labels with 2 percentages has one for energy instead of calories
+          // for juices its usually reni % for Calories, Dietary Fiber, Protein and others like Vitamin A
         } else {
           if (reniList.length == 2) {
-
             _caloriesReni = reniList[0];
             _proteinReni = reniList[1];
             _dietaryFiberReni = '';
@@ -268,18 +275,16 @@ class _LabelPageState extends State<LabelPage> {
             _cholesterolReni = '';
             _sodiumReni = '';
             _totalCarbReni = '';
-
           } else if (reniList.length == 3) {
             _caloriesReni = reniList[0];
             _dietaryFiberReni = reniList[1];
             _proteinReni = reniList[2];
 
-             _fatReni = ' ';
+            _fatReni = ' ';
             _satFatReni = '';
             _cholesterolReni = '';
             _sodiumReni = '';
             _totalCarbReni = '';
-         
           } else if (reniList.length == 6) {
             _caloriesReni = reniList[0];
             _dietaryFiberReni = reniList[1];
@@ -290,7 +295,6 @@ class _LabelPageState extends State<LabelPage> {
             _cholesterolReni = '';
             _sodiumReni = '';
             _totalCarbReni = '';
-           
           } else {
             _caloriesReni = 'work in progress';
             _dietaryFiberReni = '';
@@ -308,12 +312,15 @@ class _LabelPageState extends State<LabelPage> {
         // check regex match
         _servingInfo =
             servingMatch?.group(0) ?? 'Not recognized as Nutritional Label';
-        _caloriesInfo = caloriesMatch?.group(0) ?? 'Calories ${caloriesMatch2?.group(0)}' ?? ' ';
+        _caloriesInfo =
+            caloriesMatch?.group(0) ??
+            'Calories ${caloriesMatch2?.group(0)}' ??
+            ' ';
         //_caloriesTest = caloriesMatch2?.group(0) ??'';
-        print('test calories');
+
         _fatNum = fatNumMatch?.group(0) ?? '';
         _satFatNum = satFatNumMatch?.group(0) ?? '';
-        _transFatNum = transFatNumMatch?.group(0) ?? '';  
+        _transFatNum = transFatNumMatch?.group(0) ?? '';
         _cholesterolNum = cholesterolNumMatch?.group(0) ?? '';
         _sodiumNum = sodiumNumMatch?.group(0) ?? '';
         _potassiumNum = potassiumNumMatch?.group(0) ?? '';
@@ -323,15 +330,83 @@ class _LabelPageState extends State<LabelPage> {
         _sugarsNum = sugarsNumMatch?.group(0) ?? '';
         _protein = proteinMatch?.group(0) ?? 'Protein';
         _proteinNum = proteinNumMatch?.group(0) ?? '';
+        _energy = energyMatch?.group(0) ?? '';
 
-        // testing
-        _caloriesInfo?.split(" ").forEach((word) {
-          if (word == 'Energy') {
-            print("checking if label has energy instead of calories");
+        // for recommendation part. placeholder for now
+        // check if positive nutrients DV/Reni% are high:
+        // 20% is considered high, 5% is considered low
+        // positives: high fiber, high protein
+        // negatives: high energy, high sugars, high saturated fats
+        // remove percentage
+        var finalSatFat = '0';
+
+        if (_satFatReni.contains('%')) {
+          finalSatFat = _satFatReni.replaceAll('%', '');
+        }
+
+        var finalProtein = '0';
+
+        if (_proteinReni.contains('%')) {
+          finalProtein = _proteinReni.replaceAll('%', '');
+        }
+
+        var finalFiber = '0';
+
+        if (_dietaryFiberReni.contains('%')) {
+          finalFiber = _dietaryFiberReni.replaceAll('%', '');
+        }
+
+        if (int.parse(finalProtein) >= 20) {
+          highProtein = 'This product is high in protein.';
+          score += 3;
+        } else if (int.parse(finalProtein) >= 6) {
+          score += 1;
+          highProtein = '';
+        } else {
+          score -= 1;
+          highProtein = '';
+        }
+
+        if (int.parse(finalFiber) >= 20) {
+          highFiber = 'This product is high in fiber.';
+          score += 3;
+        } else if (int.parse(finalFiber) >= 6) {
+          score += 1;
+          highFiber = '';
+        } else {
+          score -= 1;
+          highFiber = '';
+        }
+
+        if (finalSatFat != Null) {
+          if (int.parse(finalSatFat) >= 20) {
+            highSatFat = 'This product is high in saturated fat.';
+            score -= 3;
+          } else if (int.parse(finalSatFat) >= 6) {
+            score -= 1;
+            highSatFat = '';
+          } else {
+            score += 1;
+            highSatFat = '';
           }
-        });
+        }
+        // add one for energy
+        print('score');
+        print(score);
 
-
+        if (score >= 6) {
+          recommendation = 'Highly Recommended';
+          score = 0;
+        } else if (score >= 3) {
+          recommendation = 'Recommended';
+          score = 0;
+        } else if (score >= 1) {
+          recommendation = 'Slightly Recommended';
+          score = 0;
+        } else {
+          recommendation = 'Not Recommended';
+          score = 0;
+        }
       });
     } catch (e) {
       debugPrint('Error picking image: $e');
@@ -377,21 +452,43 @@ class _LabelPageState extends State<LabelPage> {
               runSpacing: 12.0,
               children: [
                 /// upload image
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.gallery),
-                  icon: const Icon(Icons.photo_library),
-                  label: const Text('Pick Image'),
+                ButtonTheme(
+                  minWidth: 30,
+                  height: 80,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _pickImage(ImageSource.gallery),
+                    icon: const Icon(
+                      Icons.file_upload_outlined,
+                      color: Colors.green,
+                      size: 30,
+                    ),
+                    label: const Text(
+                      'Upload Image',
+                      style: TextStyle(fontSize: 24, color: Colors.black),
+                    ),
+                  ),
                 ),
 
                 /// take photo
-                ElevatedButton.icon(
-                  onPressed: () => _pickImage(ImageSource.camera),
-                  icon: const Icon(Icons.camera_alt),
-                  label: const Text('Use Camera'),
+                ButtonTheme(
+                  minWidth: 30,
+                  height: 80,
+                  child: ElevatedButton.icon(
+                    onPressed: () => _pickImage(ImageSource.camera),
+                    icon: const Icon(
+                      Icons.camera_alt,
+                      color: Colors.green,
+                      size: 30,
+                    ),
+                    label: const Text(
+                      'Use Camera',
+                      style: TextStyle(fontSize: 24, color: Colors.black),
+                    ),
+                  ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
             Expanded(
               child:
                   _isProcessing
@@ -424,6 +521,29 @@ class _LabelPageState extends State<LabelPage> {
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                 ),
+                              ),
+                            ),
+                            // container to hold if product is recommended
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              child: Text(
+                                recommendation,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              child: Text(
+                                highProtein +
+                                    highSatFat +
+                                    highFiber +
+                                    testResult,
                               ),
                             ),
                             // where table begins
@@ -491,7 +611,10 @@ class _LabelPageState extends State<LabelPage> {
                                           ),
                                           children: <TextSpan>[
                                             TextSpan(
-                                              text: _caloriesInfo ?? ' ',
+                                              // if theres no calories theres energy
+                                              text:
+                                                  _caloriesInfo ??
+                                                  ('Energy') + _energy,
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -527,7 +650,12 @@ class _LabelPageState extends State<LabelPage> {
                                               ),
                                             ),
                                             // sometimes the ocr reads 0 as O
-                                            TextSpan(text: _fatNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _fatNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -545,7 +673,8 @@ class _LabelPageState extends State<LabelPage> {
                                     ),
                                     children: [
                                       Text(
-                                        ('Saturated Fat') + (_satFatNum.replaceAll('O', '0')),
+                                        ('Saturated Fat') +
+                                            (_satFatNum.replaceAll('O', '0')),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(),
                                       ),
@@ -563,7 +692,8 @@ class _LabelPageState extends State<LabelPage> {
                                     ),
                                     children: [
                                       Text(
-                                        ('Trans Fat') + (_transFatNum.replaceAll('O', '0')),
+                                        ('Trans Fat') +
+                                            (_transFatNum.replaceAll('O', '0')),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(),
                                       ),
@@ -594,11 +724,19 @@ class _LabelPageState extends State<LabelPage> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            TextSpan(text: _cholesterolNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _cholesterolNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                      Text(_cholesterolReni ?? ' ', textAlign: TextAlign.center),
+                                      Text(
+                                        _cholesterolReni ?? ' ',
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ],
                                   ),
 
@@ -621,11 +759,19 @@ class _LabelPageState extends State<LabelPage> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            TextSpan(text: _sodiumNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _sodiumNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                      Text(_sodiumReni ?? ' ', textAlign: TextAlign.center),
+                                      Text(
+                                        _sodiumReni ?? ' ',
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ],
                                   ),
 
@@ -648,7 +794,12 @@ class _LabelPageState extends State<LabelPage> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            TextSpan(text: _potassiumNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _potassiumNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -675,11 +826,19 @@ class _LabelPageState extends State<LabelPage> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            TextSpan(text: _totalCarbNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _totalCarbNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
-                                      Text(_totalCarbReni ?? ' ', textAlign: TextAlign.center),
+                                      Text(
+                                        _totalCarbReni ?? ' ',
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ],
                                   ),
 
@@ -689,7 +848,11 @@ class _LabelPageState extends State<LabelPage> {
                                     ),
                                     children: [
                                       Text(
-                                        ('Dietary Fiber ') + _dietaryfiberNum.replaceAll('O', '0'),
+                                        ('Dietary Fiber ') +
+                                            _dietaryfiberNum.replaceAll(
+                                              'O',
+                                              '0',
+                                            ),
                                         textAlign: TextAlign.center,
                                       ),
                                       Text(
@@ -713,7 +876,12 @@ class _LabelPageState extends State<LabelPage> {
                                           ),
                                           children: <TextSpan>[
                                             TextSpan(text: _sugars),
-                                            TextSpan(text: _sugarsNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _sugarsNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -740,7 +908,12 @@ class _LabelPageState extends State<LabelPage> {
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            TextSpan(text: _proteinNum.replaceAll('O', '0')),
+                                            TextSpan(
+                                              text: _proteinNum.replaceAll(
+                                                'O',
+                                                '0',
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -753,9 +926,30 @@ class _LabelPageState extends State<LabelPage> {
                                 ],
                               ),
                             ),
-
                             const SizedBox(height: 12),
-                            const SizedBox(height: 52),
+                            ButtonTheme(
+                              minWidth: 30,
+                              height: 80,
+                              child: ElevatedButton.icon(
+                                onPressed: () => {},
+                                icon: const Icon(
+                                  Icons.file_upload_outlined,
+                                  color: Colors.green,
+                                  size: 30,
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Colors.white, 
+                                ),
+                                label: const Text(
+                                  'Upload Ingredients',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

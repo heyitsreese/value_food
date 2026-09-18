@@ -47,3 +47,25 @@ android {
 flutter {
     source = "../.."
 }
+
+// added for python
+// apply plugin: "com.android.application"
+// apply plugin: "com.chaquo.python"
+
+// android {
+//     defaultConfig {
+//         ndk {
+//             abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+//         }
+//         python {
+//             version "3.12"
+//             pip {
+//                 // Add your required Python packages here
+//                 install "numpy"
+//                 install "pandas"
+//                 install "matplotlib"
+//                 install "flask"
+//             }
+//         }
+//     }
+// }
