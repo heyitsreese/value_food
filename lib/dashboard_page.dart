@@ -8,6 +8,7 @@ import 'goals_page.dart';
 import 'goals_info_page.dart';
 
 import 'budget_page.dart';
+import 'label_page.dart';
 
 class DashboardPage extends StatefulWidget {
   final String userId;
@@ -66,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return {
             "type": d['type'],
             "amount": (d['amount'] ?? 0).toDouble(),
-            "icon": d['type'] == "Food"
+            "icon": d['type'] == "Lunch"
                 ? Icons.fastfood
                 : Icons.shopping_cart,
           };
@@ -86,16 +87,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFA5D6A7),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadDashboardData,
@@ -136,7 +128,7 @@ class _DashboardPageState extends State<DashboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Hello, $username! 👋",
+          "Hey, $username!",
           style: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
@@ -148,7 +140,7 @@ class _DashboardPageState extends State<DashboardPage> {
           "Let’s manage your food & budget today",
           style: TextStyle(
             fontSize: 16,
-            color: Color(0xFF4E6E58),
+            color: Colors.white,
           ),
         ),
       ],
@@ -173,7 +165,7 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Current shopping budget",
+            "Monthly Budget",
             style: TextStyle(
               fontSize: 16,
               color: Color(0xFF4E6E58),
@@ -251,7 +243,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 "Recent Activity",
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF1B5E20),
                 ),
               ),
@@ -273,7 +265,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF81C784),
+                    color: Color(0xFF2E7D32),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -307,11 +299,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
                 return ListTile(
                   leading: Icon(item["icon"], color: Colors.green),
-                  title: Text(item["type"]),
+                  title: Text(item["type"], style: TextStyle(color: Color(0xFF2E7D32), fontSize: 24, fontWeight: FontWeight.bold)),
                   trailing: Text(
                     pesoFormat.format(item["amount"]),
                     style: const TextStyle(
+                      color: Color(0xFF2E7D32),
                       fontFamily: 'sans-serif', // ✅ peso fix
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 );
@@ -340,13 +335,13 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         }
       
-        // go to scanner page
+        // go to label scanner page
         if (index == 2){
           Navigator.push(
             context,
             MaterialPageRoute(
               //switch
-              builder: (_) => BudgetPage(userId: widget.userId),
+              builder: (_) => LabelPage(userId: widget.userId),
             ),
           );
         }

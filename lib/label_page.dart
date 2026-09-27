@@ -434,13 +434,7 @@ class _LabelPageState extends State<LabelPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Upload Nutrtion Facts Label')),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF81C784), Color(0xFFE8F5E9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+       decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -496,7 +490,7 @@ class _LabelPageState extends State<LabelPage> {
                         child: CircularProgressIndicator.adaptive(),
                       )
                       : _imageFile == null
-                      ? const Center(child: Text('No image selected'))
+                      ? const Center(child: Text('No image selected', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))
                       : SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -531,6 +525,7 @@ class _LabelPageState extends State<LabelPage> {
                               child: Text(
                                 recommendation,
                                 style: TextStyle(
+                                  color: (recommendation == 'Not Recommended') ? Colors.redAccent : (recommendation =='Slighty Recommended') ? Colors.yellow : Colors.greenAccent,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                 ),
@@ -562,7 +557,7 @@ class _LabelPageState extends State<LabelPage> {
                                 children: [
                                   const TableRow(
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 143, 210, 67),
+                                      color: Color.fromRGBO(232, 245, 233, 100),
                                     ),
                                     children: [
                                       TableCell(

@@ -11,7 +11,6 @@ import 'goals_info_page.dart';
 import 'budget_page.dart';
 import 'label_page.dart';
 
-
 class ProfilePage extends StatefulWidget {
   final String userId;
 
@@ -19,10 +18,7 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
-  
-  
 }
-
 
 class _ProfilePageState extends State<ProfilePage> {
   String firstName = "";
@@ -46,10 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadProfile() async {
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.userId)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.userId)
+            .get();
 
     final data = doc.data();
 
@@ -57,8 +54,12 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         String fullName = data['name'] ?? "";
 
-        firstName = data['firstName'] ?? (fullName.split(" ").isNotEmpty ? fullName.split(" ")[0] : "");
-        lastName = data['lastName'] ?? (fullName.split(" ").length > 1 ? fullName.split(" ")[1] : "");
+        firstName =
+            data['firstName'] ??
+            (fullName.split(" ").isNotEmpty ? fullName.split(" ")[0] : "");
+        lastName =
+            data['lastName'] ??
+            (fullName.split(" ").length > 1 ? fullName.split(" ")[1] : "");
         age = data['age'] ?? 0;
         height = (data['height'] ?? 0).toDouble();
         weight = (data['weight'] ?? 0).toDouble();
@@ -98,25 +99,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF81C784),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -164,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 5),
             Text(
               "Manage your personal information",
-              style: TextStyle(color: Color(0xFF1B5E20)),
+              style: TextStyle(color: Colors.white),
             ),
           ],
         ),
@@ -174,22 +164,24 @@ class _ProfilePageState extends State<ProfilePage> {
           icon: const Icon(Icons.logout, color: Colors.white, size: 28),
           onPressed: () async {
             // Optional confirmation
-            bool confirm = await showDialog(
+            bool confirm =
+                await showDialog(
                   context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text("Logout"),
-                    content: const Text("Are you sure you want to logout?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text("Cancel"),
+                  builder:
+                      (_) => AlertDialog(
+                        title: const Text("Logout"),
+                        content: const Text("Are you sure you want to logout?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text("Logout"),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text("Logout"),
-                      ),
-                    ],
-                  ),
                 ) ??
                 false;
 
@@ -213,7 +205,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.black.withOpacity(0.08),
             blurRadius: 15,
             offset: const Offset(0, 5),
-          )
+          ),
         ],
       ),
       child: child,
@@ -262,25 +254,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 icon: const Icon(Icons.edit),
                 label: const Text("Edit"),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Age\n$age years"),
-              Text("Height\n${height.toDouble()}\""),
+              Text("Age\n$age years", style: TextStyle(fontWeight: FontWeight.w600)),
+              Text("Height\n${height.toDouble()}\"", style: TextStyle(fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Weight\n${weight.toInt()} lbs"),
+              Text("Weight\n${weight.toInt()} lbs", style: TextStyle(fontWeight: FontWeight.w600)),
               Text(
                 "Budget\n${pesoFormat.format(budget)}",
-                style: const TextStyle(fontFamily: 'sans-serif'),
+                style: const TextStyle(fontFamily: 'sans-serif', fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -297,16 +289,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Body Mass Index (BMI)"),
+              const Text("Body Mass Index (BMI)", style: TextStyle(fontWeight: FontWeight.w600)),
               const SizedBox(height: 10),
               Text(
                 bmi.toStringAsFixed(1),
                 style: const TextStyle(fontSize: 32),
               ),
-              Text(
-                bmiLabel,
-                style: const TextStyle(color: Colors.green),
-              ),
+              Text(bmiLabel, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.w600)),
             ],
           ),
           const Text(
@@ -320,21 +309,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildBudget() {
     return _card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Grocery Budget"),
-          const SizedBox(height: 10),
-          Text(
-            pesoFormat.format(budget),
-            style: const TextStyle(
-              fontFamily: 'sans-serif',
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Grocery Budget", style: TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 10),
+              Text(
+                pesoFormat.format(budget),
+                style: const TextStyle(
+                  fontFamily: 'sans-serif',
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              const Text("Available per shopping trip"),
+            ],
           ),
-          const Text("Available per shopping trip"),
         ],
       ),
     );
@@ -342,24 +336,41 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildAllergies() {
     return _card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Food Allergies",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            children: allergies.map((a) {
-              return Padding(
-                padding: const EdgeInsets.all(4),
-                child: Chip(
-                  label: Text(a),
-                  backgroundColor: Colors.red.shade100,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(child: Icon(Icons.warning, size: 18, color: Colors.red)),
+                    TextSpan(
+                      text: " Food Allergies",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            }).toList(),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                children:
+                    allergies.map((a) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Chip(
+                          label: Text(a),
+                          backgroundColor: Colors.red.shade100,
+                        ),
+                      );
+                    }).toList(),
+              ),
+            ],
           ),
         ],
       ),
@@ -372,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: Colors.green,
       unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,   
+      showSelectedLabels: false,
       showUnselectedLabels: false,
 
       onTap: (index) {
@@ -384,37 +395,68 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           );
         }
-          if (index == 1){
+        if (index == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => BudgetPage(userId: widget.userId),
+            MaterialPageRoute(
+              builder: (_) => BudgetPage(userId: widget.userId),
             ),
           );
         }
 
-        if (index == 2){
+        if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => LabelPage(userId: widget.userId)),
+          );
+        }
+        if (index == 3) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => LabelPage(userId: widget.userId),
-            ),
-          );
-        }
-        if (index==3){
-          Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId),
+              builder: (_) => GoalsInfoPage(userId: widget.userId),
             ),
           );
         }
       },
 
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-       BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
+        BottomNavigationBarItem(icon: Column(
+          children: [
+            Icon(Icons.home),
+            Text('home', style: TextStyle(fontSize: 12))
+          ],
+        ), label: ""),
+        BottomNavigationBarItem(icon: Column(
+          children: [
+            Icon(Icons.savings),
+            Text('budget', style: TextStyle(fontSize: 12))
+          ],
+        ), label: ""),
+        BottomNavigationBarItem(
+          icon: SizedBox(
+            // height: 80,
+            child: Column(
+              children: [
+                Icon(Icons.qr_code_scanner, size: 45),
+                Text('scan label', style: TextStyle(fontSize: 12))
+              ],
+            ),
+          ),
+          label: "",
+        ),
+        BottomNavigationBarItem(icon: Column(
+          children: [
+            Icon(Icons.flag),
+            Text('goals', style: TextStyle(fontSize: 12))
+          ],
+        ), label: ""),
+        BottomNavigationBarItem(icon: Column(
+          children: [
+            Icon(Icons.person),
+            Text('profile', style: TextStyle(fontSize: 12))
+          ],
+        ), label: ""),
       ],
     );
   }

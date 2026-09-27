@@ -11,7 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -22,38 +21,35 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-Future<void> loginUser() async {
-  try {
-    final userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
-    );
+  Future<void> loginUser() async {
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
 
-    // 🔥 VERY IMPORTANT FIX
-    if (!mounted) return;
+      // 🔥 VERY IMPORTANT FIX
+      if (!mounted) return;
 
-    String userId = userCredential.user!.uid;
+      String userId = userCredential.user!.uid;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Login successful 🎉")),
-    );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Login successful 🎉")));
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DashboardPage(userId: userId),
-      ),
-    );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardPage(userId: userId)),
+      );
+    } catch (e) {
+      if (!mounted) return;
 
-  } catch (e) {
-    if (!mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Login failed: $e")),
-    );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login failed: $e")));
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -64,167 +60,170 @@ Future<void> loginUser() async {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFA5D6A7),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: SafeArea(
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: size.height),
               child: IntrinsicHeight(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.06,
-                  ),
-                  child: Column(
-                    children: [
+                // child: Padding(
+                // padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+                child: Column(
+                  children: [
+                    SizedBox(height: size.height * 0.08),
 
-                      SizedBox(height: size.height * 0.08),
+                    // LOGO
+                    Image.asset(
+                      'assets/new_logo.png',
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 2,
+                      fit: BoxFit.cover,
+                    ),
 
-                      // 🧾 CARD
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 15,
-                              offset: Offset(0, 5),
-                            )
-                          ],
+                    SizedBox(height: 20),
+
+                    // TITLE
+                    RichText(
+                      text: TextSpan(
+                        text: 'Value',
+                        style: TextStyle(
+                          color: Color.fromRGBO(32, 101, 137, 100),
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          fontFamily: 'Poppins-Bold',
                         ),
-                        child: Column(
-                          children: [
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Food',
+                            style: TextStyle(
+                              color: Color.fromRGBO(122, 184, 77, 100),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
 
-                            // 🔐 ICON
-                            const CircleAvatar(
-                              radius: 35,
-                              backgroundColor: Color(0xFFA5D6A7),
-                              child: Icon(
-                                Icons.login,
+                    // under title text
+                    Text(
+                      'Smart Choice. Safe Nutrition. Maximum Value.',
+                      style: TextStyle(color: Color.fromRGBO(46, 125, 50, 100)),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(122, 184, 77, 100),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(40.0),
+                          topLeft: Radius.circular(40.0),
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 50),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Welcome Back!',
+                              style: TextStyle(
                                 color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            const Text(
-                              "Welcome Back",
-                              style: TextStyle(
-                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF565656),
+                                fontSize: 22,
                               ),
                             ),
-
-                            const SizedBox(height: 5),
-
-                            const Text(
-                              "Log in to your nutrition tracker",
+                          ),
+                          SizedBox(height: 20),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Log in to your nutrition tracker',
                               style: TextStyle(
-                                color: Color(0xFF565656),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
+                          ),
+                          const SizedBox(height: 40),
 
-                            const SizedBox(height: 25),
+                          CustomTextField(
+                            label: "Email",
+                            hint: "your@email.com",
+                            icon: Icons.email,
+                            controller: emailController,
+                          ),
 
-                            // 📧 EMAIL
-                            CustomTextField(
-                              label: "Email",
-                              hint: "your@email.com",
-                              icon: Icons.email,
-                              controller: emailController,
-                            ),
+                          const SizedBox(height: 15),
 
-                            const SizedBox(height: 15),
+                          CustomTextField(
+                            label: "Password",
+                            hint: "••••••••",
+                            icon: Icons.lock,
+                            isPassword: true,
+                            controller: passwordController,
+                          ),
 
-                            // 🔒 PASSWORD
-                            CustomTextField(
-                              label: "Password",
-                              hint: "••••••••",
-                              icon: Icons.lock,
-                              isPassword: true,
-                              controller: passwordController,
-                            ),
+                          const SizedBox(height: 50),
 
-                            const SizedBox(height: 25),
-
-                            // 🔘 LOGIN BUTTON
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF81C784),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
+                          SizedBox(
+                            width:  MediaQuery.of(context).size.width / 1.3,
+                            height: 50,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:  Color(0xFF2E7D32),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(7),
                                 ),
-                                onPressed: loginUser,
+                                elevation: 6,
+                              ),
+                              onPressed: loginUser,
+                              child: const Text(
+                                "Log In",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                                Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Don't have an account? ",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SignupPage(),
+                                    ),
+                                  );
+                                },
                                 child: const Text(
-                                  "Log In",
+                                  "Sign Up",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
+                          ),
 
-                            const SizedBox(height: 20),
-
-                            // 🔁 SIGN UP LINK
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Don't have an account? ",
-                                  style: TextStyle(color: Color(0xFF9C9C9C)),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const SignupPage(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Sign Up",
-                                    style: TextStyle(
-                                      color: Color(0xFF2E7D32),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
-
-                      const Spacer(),
-
-                      const Text(
-                        "© 2026 ValueFood",
-                        style: TextStyle(color: Colors.black54, fontSize: 12),
-                      ),
-
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
+                // ),
               ),
             ),
           ),

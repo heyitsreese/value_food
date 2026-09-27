@@ -8,6 +8,8 @@ import 'goals_page.dart';
 import 'goals_info_page.dart';
 import 'dashboard_page.dart';
 import 'budget_page.dart';
+import 'label_page.dart';
+
 //import 'package:table_calendar/table_calendar.dart';
 
 class SavingsPage extends StatefulWidget {
@@ -60,13 +62,7 @@ class _SavingsPageState extends State<SavingsPage> {
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF81C784), Color(0xFFE8F5E9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadSavingsData,
@@ -184,7 +180,7 @@ class _SavingsPageState extends State<SavingsPage> {
           const SizedBox(height: 8),
           const Text(
             "To help manage your spendings",
-            style: TextStyle(fontSize: 16, color: Color(0xFF33691E)),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ],
       ),
@@ -192,57 +188,61 @@ class _SavingsPageState extends State<SavingsPage> {
   }
 
   Widget _buildButtons() {
-    return Container(
+    return SizedBox(
       //color: Colors.white,
       //padding: const EdgeInsets.all(10),
       child: Row(
         children: [
-          const SizedBox(width: 20),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(23),
-            ),
-            onPressed: () async {
-              await Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => BudgetPage(userId: widget.userId),
+          const SizedBox(width: 15),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BudgetPage(userId: widget.userId),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2E7D32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            child: const Text(
-              'Meal Plan',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.bold,
+                elevation: 6,
+              ),
+              child: const Text(
+                "Meal Plan",
+                style: TextStyle(
+                  color: Colors.white,
+                  decorationColor: Colors.white,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 40),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(23),
-            ),
-            onPressed: () async {
-              await Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SavingsPage(userId: widget.userId),
+          const SizedBox(width: 5),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SavingsPage(userId: widget.userId),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2E7D32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            child: const Text(
-              'Savings',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
+                elevation: 6,
+              ),
+              child: const Text(
+                "Savings",
+                style: TextStyle(color: Colors.white, decoration: TextDecoration.underline, decorationColor: Colors.white),
               ),
             ),
           ),
@@ -257,13 +257,6 @@ class _SavingsPageState extends State<SavingsPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 5,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: Column(
         children: [
@@ -379,13 +372,6 @@ class _SavingsPageState extends State<SavingsPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 5,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: Row(
         children: [
@@ -448,7 +434,7 @@ class _SavingsPageState extends State<SavingsPage> {
             context,
             MaterialPageRoute(
               // switch to nutri label page
-              builder: (_) => SavingsPage(userId: widget.userId),
+              builder: (_) => LabelPage(userId: widget.userId),
             ),
           );
         }

@@ -10,6 +10,7 @@ import 'dashboard_page.dart';
 import 'goals_page.dart';
 import 'savings_page.dart';
 import 'goals_info_page.dart';
+import 'label_page.dart';
 
 class BudgetPage extends StatefulWidget {
   final String userId;
@@ -44,16 +45,13 @@ class _BudgetPageState extends State<BudgetPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF81C784), Color(0xFFE8F5E9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadBudgetData,
@@ -61,26 +59,21 @@ class _BudgetPageState extends State<BudgetPage> {
               builder: (context, constraints) {
                 return SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildHeader(),
-                          const SizedBox(height: 1),
-                          _buildButtons(),
-                          const SizedBox(height: 20),
-                          _buildPlanBox(),
-                          const SizedBox(height: 20),
-                          _buildMeals(),
-                          // const SizedBox(height: 20),
-                          // _buildRecommended(),
-                        ],
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 1),
+                        _buildButtons(),
+                        const SizedBox(height: 20),
+                        _buildPlanBox(),
+                        const SizedBox(height: 20),
+                        _buildMeals(),
+                        // const SizedBox(height: 20),
+                        // _buildRecommended(),
+                      ],
                     ),
                   ),
                 );
@@ -109,7 +102,7 @@ class _BudgetPageState extends State<BudgetPage> {
           const SizedBox(height: 8),
           const Text(
             "To help manage your spendings",
-            style: TextStyle(fontSize: 16, color: Color(0xFF33691E)),
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ],
       ),
@@ -117,51 +110,62 @@ class _BudgetPageState extends State<BudgetPage> {
   }
 
   Widget _buildButtons() {
-    return Container(
+    return SizedBox(
       //color: Colors.white,
       //padding: const EdgeInsets.all(10),
       child: Row(
         children: [
-          const SizedBox(width: 20),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(23),
-            ),
-            onPressed: null,
-            child: const Text(
-              'Meal Plan',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                
+          const SizedBox(width: 15),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => BudgetPage(userId: widget.userId),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2E7D32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 6,
+              ),
+              child: const Text(
+                "Meal Plan",
+                style: TextStyle(
+                  color: Colors.white,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.white,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 40),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 20),
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.all(23),
-            ),
-            onPressed: () async {
-                   await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => SavingsPage(userId: widget.userId),
-                    ),
-                  );
-            },
-            child: const Text(
-              'Savings',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.bold,
+          const SizedBox(width: 5),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2.5,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SavingsPage(userId: widget.userId),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF2E7D32),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                elevation: 6,
+              ),
+              child: const Text(
+                "Savings",
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -176,13 +180,13 @@ class _BudgetPageState extends State<BudgetPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Color.fromRGBO(0, 0, 0, 0.5),
+        //     blurRadius: 10,
+        //     offset: const Offset(0, 5),
+        //   ),
+        // ],
       ),
       child: Column(
         children: [
@@ -191,7 +195,7 @@ class _BudgetPageState extends State<BudgetPage> {
               const Text(
                 "Weight Loss Meal Plan",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Color.fromRGBO(0, 0, 0, 1),
                   fontWeight: FontWeight.w700,
                 ),
@@ -204,7 +208,7 @@ class _BudgetPageState extends State<BudgetPage> {
               const Text(
                 "Personalized based on your personal info and budget",
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 14,
                   color: Color.fromRGBO(0, 0, 0, 1),
                 ),
               ),
@@ -216,38 +220,98 @@ class _BudgetPageState extends State<BudgetPage> {
             children: [
               const SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.only(top: 50, bottom: 50),
+                padding: const EdgeInsets.only(
+                  top: 50,
+                  bottom: 50,
+                  left: 10,
+                  right: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(196, 35, 35, 0.1),
-                  // borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
-                  '🔥 \n Daily Calories \n 1920', //test
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(232, 85, 40, 1),
-                    //color: Color.fromRGBO(0, 0, 0, 1)
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.local_fire_department,
+                      color: Colors.red,
+                      size: 30,
+                    ),
+
+                    Text(
+                      'Daily Calories',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        // fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        // fontFamily: 'Poppins-Bold',
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      '1920',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        // fontFamily: 'Poppins-Bold',
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
               const SizedBox(height: 10, width: 30),
               Container(
-                padding: const EdgeInsets.only(top: 50, bottom: 50),
+                padding: const EdgeInsets.only(
+                  top: 50,
+                  bottom: 50,
+                  left: 10,
+                  right: 10,
+                ),
                 decoration: BoxDecoration(
                   color: Color.fromRGBO(136, 185, 103, 0.21),
-                  // borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
-                  '₱ \n Weekly Budget \n ₱1000', //test
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '₱',
+                      style: TextStyle(
+                        color: Color.fromRGBO(46, 125, 50, 100),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        // fontFamily: 'Poppins-Bold',
+                      ),
+                    ),
+
+                    Text(
+                      'Weekly Budget',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        // fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        // fontFamily: 'Poppins-Bold',
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      '₱1000',
+                      style: TextStyle(
+                        color: Color.fromRGBO(46, 125, 50, 100),
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        // letterSpacing: 2,
+                        // fontFamily: 'Poppins-Bold',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -263,13 +327,6 @@ class _BudgetPageState extends State<BudgetPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
 
       child: Column(
@@ -324,15 +381,16 @@ class _BudgetPageState extends State<BudgetPage> {
             context,
             MaterialPageRoute(
               //switch
-              builder: (_) => BudgetPage(userId: widget.userId),
+              builder: (_) => LabelPage(userId: widget.userId),
             ),
           );
         }
 
-         if (index==3){
+        if (index == 3) {
           Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (_) => GoalsInfoPage(userId: widget.userId),
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoalsInfoPage(userId: widget.userId),
             ),
           );
         }
@@ -350,7 +408,10 @@ class _BudgetPageState extends State<BudgetPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-     BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code_scanner, size: 40),
+          label: "",
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],

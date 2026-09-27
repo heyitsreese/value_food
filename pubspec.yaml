@@ -50,6 +50,7 @@ flutter:
     - assets/
     - assets/logo.png
     - assets/products.json  
+    - assets/icons/target_check.png
 
   fonts:
     - family: Poppins

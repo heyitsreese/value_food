@@ -78,7 +78,7 @@ class LandingPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -123,6 +123,7 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
 
+                // under title text
                 Text(
                   'Smart Choice. Safe Nutrition. Maximum Value.',
                   style: TextStyle(color: Color.fromRGBO(46, 125, 50, 100)),
@@ -130,6 +131,7 @@ class LandingPage extends StatelessWidget {
 
                 SizedBox(height: 50),
 
+                // green card start
                 Container(
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(122, 184, 77, 100),
@@ -193,27 +195,18 @@ class LandingPage extends StatelessWidget {
                               MaterialPageRoute(builder: (_) => SignupPage()),
                             );
                           },
-                          // child: Text(
-                          //   "Get Started →",
-                          //   style: TextStyle(
-                          //     color: Color.fromARGB(255, 255, 255, 255),
-                          //     fontSize: 18,
-                          //   ),
-                          // ),
                           child: RichText(
                             text: TextSpan(
                               text: 'Get Started',
                               style: TextStyle(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 fontSize: 18,
-                                fontWeight: FontWeight.w600
+                                fontWeight: FontWeight.w600,
                               ),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: '→',
-                                  style: TextStyle(
-                                    fontSize: 25,
-                                  ),
+                                  style: TextStyle(fontSize: 25),
                                 ),
                               ],
                             ),
@@ -250,112 +243,6 @@ class LandingPage extends StatelessWidget {
                     ],
                   ),
                 ),
-
-                // FEATURES
-
-                // FeatureCard(
-                //   icon: Icons.camera_alt,
-                //   title: "Scan Nutrition Labels",
-                //   subtitle: "Instantly capture and read nutritional facts",
-                // ),
-
-                // SizedBox(height: 15),
-
-                // FeatureCard(
-                //   icon: Icons.track_changes,
-                //   title: "AI Diet Recommendations",
-                //   subtitle: "Get personalized meal plans based on your budget",
-                // ),
-
-                // SizedBox(height: 15),
-
-                // FeatureCard(
-                //   icon: Icons.shield,
-                //   title: "Allergen Warnings",
-                //   subtitle: "Stay safe with automatic allergy alerts",
-                // ),
-
-                // SizedBox(height: 30),
-                // SizedBox(height: 10),
-
-                // // 🔘 GET STARTED BUTTON
-                // SizedBox(
-                //   width: double.infinity,
-                //   height: 55,
-                //   child: ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //       backgroundColor: Color(0xFF2E7D32),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       elevation: 6,
-                //     ),
-                //     onPressed: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(builder: (_)=>SignupPage()),
-                //       );
-                //     },
-                //     child: Text(
-                //       "Get Started →",
-                //       style: TextStyle(
-                //         color: Color.fromARGB(255, 255, 255, 255),
-                //         fontSize: 18),
-                //     ),
-                //   ),
-                // ),
-
-                // SizedBox(height: 15),
-
-                // 🔁 LOGIN BUTTON
-                // SizedBox(
-                //   width: double.infinity,
-                //   height: 55,
-                //   child: OutlinedButton(
-                //     style: OutlinedButton.styleFrom(
-                //       side: BorderSide(color: Color(0xFFA7D489), width: 1.5),
-                //       shape: RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //     ),
-                //     onPressed: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(builder: (_)=>LoginPage()),
-                //       );
-                //     },
-                //     child: Text(
-                //       "Already have an account? Log In",
-                //       style: TextStyle(
-                //         color: Color(0xFF2E7D32),
-                //         fontWeight: FontWeight.w600,
-                //         fontSize: 16,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
-                // SizedBox(height: 25),
-
-                // // 🧾 FOOTER TEXT
-                // Text(
-                //   "Track. Budget. Eat Healthy.",
-                //   style: TextStyle(
-                //     color: Color(0xFF1B5E20),
-                //     fontSize: 14,
-                //   ),
-                // ),
-                // SizedBox(height: 20),
-
-                // Text(
-                //   "© 2026 ValueFood",
-                //   style: TextStyle(
-                //     color: Colors.black54,
-                //     fontSize: 12,
-                //   ),
-                // ),
-
-                // SizedBox(height: 20),
               ],
             ),
           ),

@@ -84,13 +84,7 @@ class _GoalsPageState extends State<GoalsPage> {
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFFA5D6A7), Color(0xFFE8F5E9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+       decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadGoalData,

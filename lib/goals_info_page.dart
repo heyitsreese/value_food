@@ -9,6 +9,7 @@ import 'dashboard_page.dart';
 
 import 'goals_page.dart';
 import 'budget_page.dart';
+import 'label_page.dart';
 
 class GoalsInfoPage extends StatefulWidget {
   final String userId;
@@ -43,7 +44,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
         targetWeight = (data['targetWeight'] ?? 0).toDouble();
         targetDate = (data['targetDate']);
       });
-    } 
+    }
   }
 
   double get progress => weight == 0 ? 0 : targetWeight / weight;
@@ -52,16 +53,11 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: _buildBottomNav(),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF81C784), Color(0xFFE8F5E9)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadGoalsData,
@@ -113,7 +109,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
         const SizedBox(height: 8),
         const Text(
           "Track your progress towards your target",
-          style: TextStyle(fontSize: 16, color: Color(0xFF33691E)),
+          style: TextStyle(fontSize: 16, color: Colors.white),
         ),
       ],
     );
@@ -125,27 +121,21 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: Column(
         children: [
           Row(
             children: [
+              Image.asset('assets/icons/target_check.png'),
               const Text(
-                "Your goal",
+                " Your Goal",
                 style: TextStyle(
                   fontSize: 16,
                   color: Color.fromRGBO(0, 0, 0, 1),
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const SizedBox(width: 100),
+              const SizedBox(width: 80),
 
               OutlinedButton.icon(
                 onPressed: () async {
@@ -168,50 +158,80 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           const SizedBox(height: 10),
           Row(
             children: [
-              const SizedBox(height: 10),
+              const SizedBox(height: 50),
               Container(
-                padding: const EdgeInsets.all(0.1),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 227, 225, 225),
-                  // borderRadius: BorderRadius.circular(20),
+                  color: Color.fromRGBO(232, 245, 233, 100),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
-                  'Current Weight: \n $weight lbs', //test
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Current Weight',
+                    style: TextStyle(
+                      // color: Color.fromRGBO( 	125,	125,	125, 100),
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins-Bold',
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '\n \n $weight lbs',
+                        style: TextStyle(
+                          // these are too bright, need darker text so its easier to read
+                          // color: Color.fromRGBO(122, 184, 77, 100),
+                          // color: Color.fromRGBO(121, 190, 75, 1),
+                          color: Color(0xFF1B5E20),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
 
-              const SizedBox(height: 10, width: 50),
+              const SizedBox(height: 50, width: 20),
               Container(
-                padding: const EdgeInsets.all(0.1),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 227, 225, 225),
-                  // borderRadius: BorderRadius.circular(20),
+                  color: Color.fromRGBO(232, 245, 233, 100),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: Text(
-                  'Target Weight: \n $targetWeight lbs', //test
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                // 'Target Weight \n $targetWeight lbs', //test
+                child: RichText(
+                  text: TextSpan(
+                    text: 'Target Weight',
+                    style: TextStyle(
+                      // color: Color.fromRGBO( 	125,	125,	125, 100),
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins-Bold',
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '\n \n $targetWeight lbs',
+                        style: TextStyle(
+                          // color: Color.fromRGBO(122, 184, 77, 100),
+                          color: Color(0xFF1B5E20),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           Row(
             children: [
-              Text("Progress"),
+              Text("Progress", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(width: 170),
-              Text('$progressPercent %'),
+              Text('$progressPercent %', style: TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
 
@@ -229,14 +249,18 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           ),
 
           const SizedBox(height: 10),
-          Text(
-            '$toLose lbs to lose', //test
-            style: const TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1B5E20),
-            ),
+          Column(
+            children: [
+              Text(
+                '$toLose lbs to lose', //test
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -249,24 +273,18 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
 
       child: Column(
         children: [
           Row(
             children: [
+              Icon(Icons.calendar_today_outlined, color: Color.fromRGBO(121, 190, 75, 100)),
               Text(
-                "Timeline",
+                " Timeline",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -280,7 +298,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                 "Target Date",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 11,
+                  fontSize: 14,
 
                   color: Colors.black,
                 ),
@@ -291,8 +309,8 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                 "05/20/2026",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 11,
-
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
@@ -306,7 +324,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                 "Days Remaining",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 11,
+                  fontSize: 14,
 
                   color: Colors.black,
                 ),
@@ -317,8 +335,8 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                 "60 days",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 11,
-
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
@@ -335,24 +353,18 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.5),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
 
       child: Column(
         children: [
           Row(
             children: [
+              Icon(Icons.recommend_outlined, color: Color.fromRGBO(121, 190, 75, 1)),
               Text(
-                "Recommended Plan",
+                " Recommended Plan",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -364,10 +376,10 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           Row(
             children: [
               Text(
-                "Weekly target",
+                "Weekly Target",
                 style: const TextStyle(
                   fontFamily: 'Poppins',
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.black,
                 ),
               ),
@@ -377,21 +389,37 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 227, 225, 225),
-                  // borderRadius: BorderRadius.circular(20),
+                  color: Color.fromRGBO(232, 245, 233, 100),
+                  borderRadius: BorderRadius.circular(20),
                 ),
 
-                child: Text(
-                  '1.2 lbs/ week \n This is healthy and sustainable ', //test
+                child: Column(
+                  children: [
+                    Text(
+                      '1.2 lbs to lose / week ', //test
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF1B5E20),
+                      ),
+                    ),
+
+                    
+                   Text(
+                  'This is healthy and sustainable ', //test
                   style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                    // fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
+                  ],
+                ),
+
               ),
             ],
           ),
@@ -419,10 +447,11 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           );
         }
 
-         if (index == 1){
+        if (index == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => BudgetPage(userId: widget.userId),
+            MaterialPageRoute(
+              builder: (_) => BudgetPage(userId: widget.userId),
             ),
           );
         }
@@ -432,7 +461,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
             context,
             MaterialPageRoute(
               // switch
-              builder: (_) => BudgetPage(userId: widget.userId),
+              builder: (_) => LabelPage(userId: widget.userId),
             ),
           );
         }
@@ -450,7 +479,10 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner, size: 40), label: ""),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.qr_code_scanner, size: 40),
+          label: "",
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
       ],
