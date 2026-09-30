@@ -165,7 +165,7 @@ class _GetInfoPageState extends State<GetInfoPage> {
                       topLeft: Radius.circular(40.0),
                     ),
                   ),
-                  height: MediaQuery.of(context).size.height / 1.1,
+                  height: MediaQuery.of(context).size.height / 0.8,
                   width: double.infinity,
                   child: Column(
                     children: [

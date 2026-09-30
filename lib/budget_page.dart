@@ -23,6 +23,8 @@ class BudgetPage extends StatefulWidget {
 class _BudgetPageState extends State<BudgetPage> {
   int calories = 0;
   double budget = 0;
+  var weeklyBudget;
+  var monthlyBudget;
 
   @override
   void initState() {
@@ -39,7 +41,10 @@ class _BudgetPageState extends State<BudgetPage> {
 
     final data = userDoc.data();
     if (data != null) {
-      setState(() {});
+      setState(() {
+        budget = (data['budget'] ?? 0).toDouble();
+        weeklyBudget = budget / 4;
+      });
     }
   }
 
@@ -47,7 +52,34 @@ class _BudgetPageState extends State<BudgetPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: _buildBottomNav(),
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: SizedBox(
+        width: 64,
+        height: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: const CircleBorder(
+            side: BorderSide(width: 3, color: const Color(0xFF2E7D32)),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LabelPage(userId: widget.userId),
+              ),
+            );
+          },
+          child: Image.asset(
+            'assets/icons/scan_icon.png',
+            color: const Color(0xFF2E7D32),
+            height: 32,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -71,8 +103,6 @@ class _BudgetPageState extends State<BudgetPage> {
                         _buildPlanBox(),
                         const SizedBox(height: 20),
                         _buildMeals(),
-                        // const SizedBox(height: 20),
-                        // _buildRecommended(),
                       ],
                     ),
                   ),
@@ -111,8 +141,6 @@ class _BudgetPageState extends State<BudgetPage> {
 
   Widget _buildButtons() {
     return SizedBox(
-      //color: Colors.white,
-      //padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           const SizedBox(width: 15),
@@ -244,8 +272,6 @@ class _BudgetPageState extends State<BudgetPage> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
-                        // fontWeight: FontWeight.bold,
-                        // letterSpacing: 2,
                         // fontFamily: 'Poppins-Bold',
                       ),
                     ),
@@ -256,8 +282,6 @@ class _BudgetPageState extends State<BudgetPage> {
                         color: Colors.red,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        // letterSpacing: 2,
-                        // fontFamily: 'Poppins-Bold',
                       ),
                     ),
                   ],
@@ -279,15 +303,34 @@ class _BudgetPageState extends State<BudgetPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '₱',
-                      style: TextStyle(
-                        color: Color.fromRGBO(46, 125, 50, 100),
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        // letterSpacing: 2,
-                        // fontFamily: 'Poppins-Bold',
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          '₱',
+                          style: TextStyle(
+                            color: Color.fromRGBO(46, 125, 50, 100),
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // button to edit weekly budget, not working yet 
+                        const SizedBox(width: 60),
+                        GestureDetector(
+                          onTap: () async {},
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF2E7D32),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
                     Text(
@@ -302,7 +345,7 @@ class _BudgetPageState extends State<BudgetPage> {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      '₱1000',
+                      '₱$weeklyBudget',
                       style: TextStyle(
                         color: Color.fromRGBO(46, 125, 50, 100),
                         fontSize: 20,
@@ -330,6 +373,7 @@ class _BudgetPageState extends State<BudgetPage> {
       ),
 
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
@@ -343,78 +387,184 @@ class _BudgetPageState extends State<BudgetPage> {
               ),
             ],
           ),
+          Text('Generated based on your scanned grocery products'),
+          const SizedBox(height: 20),
+          Text('☀️ Breakfast', style: TextStyle(fontWeight: FontWeight.bold)),
+          _buildBreakfast()
         ],
       ),
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: 1,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
+  Widget _buildBreakfast() {
+     return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(136, 185, 103, 0.21),
+        // borderRadius: BorderRadius.circular(20),
+      ),
 
-      onTap: (index) {
-        if (index == 0) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DashboardPage(userId: widget.userId),
-            ),
-          );
-        }
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                "Oatmeal with Sliced Banana",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
 
-        if (index == 1) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BudgetPage(userId: widget.userId),
-            ),
-          );
-        }
+                  color: Colors.black,
+                ),
+              ),
 
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              //switch
-              builder: (_) => LabelPage(userId: widget.userId),
-            ),
-          );
-        }
+              const SizedBox(width: 10),
+              Text(
+                "₱30",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
 
-        if (index == 3) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => GoalsInfoPage(userId: widget.userId),
-            ),
-          );
-        }
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                "Scrambled Eggs on Rice",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
 
-        if (index == 4) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProfilePage(userId: widget.userId),
-            ),
-          );
-        }
-      },
+                  color: Colors.black,
+                ),
+              ),
 
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.qr_code_scanner, size: 40),
-          label: "",
+              const SizedBox(width: 10),
+              Text(
+                "₱27",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                "Boiled Kamote with eggs",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+
+                  color: Colors.black,
+                ),
+              ),
+
+              const SizedBox(width: 10),
+              Text(
+                "₱22",
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Colors.white,
+      elevation: 10,
+      child: SizedBox(
+        height: 62,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home_rounded, "home", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DashboardPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.savings_rounded, "budget", true, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BudgetPage(userId: widget.userId),
+                ),
+              );
+            }),
+            const SizedBox(width: 48),
+            _navItem(Icons.flag_rounded, "goals", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GoalsInfoPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.person_rounded, "profile", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePage(userId: widget.userId),
+                ),
+              );
+            }),
+          ],
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-      ],
+      ),
+    );
+  }
+
+  Widget _navItem(
+    IconData icon,
+    String label,
+    bool isActive,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 26,
+            color: isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color:
+                  isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

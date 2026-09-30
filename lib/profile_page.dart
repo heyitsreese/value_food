@@ -97,7 +97,28 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _buildBottomNav(),
+           backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: SizedBox(
+        width: 64,
+        height: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: const CircleBorder(side: BorderSide(width: 3,color: const Color(0xFF2E7D32))),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LabelPage(userId: widget.userId),
+              ),
+            );
+          },
+          child: Image.asset('assets/icons/scan_icon.png', color:const Color(0xFF2E7D32), height: 32)
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
       body: Container(
         decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
@@ -122,7 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 20),
                         _buildAllergies(),
 
-                        // 👇 THIS FILLS REMAINING SPACE NICELY
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -377,87 +397,85 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: 4,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-
-      onTap: (index) {
-        if (index == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DashboardPage(userId: widget.userId),
-            ),
-          );
-        }
-        if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BudgetPage(userId: widget.userId),
-            ),
-          );
-        }
-
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => LabelPage(userId: widget.userId)),
-          );
-        }
-        if (index == 3) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => GoalsInfoPage(userId: widget.userId),
-            ),
-          );
-        }
-      },
-
-      items: const [
-        BottomNavigationBarItem(icon: Column(
+ Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Colors.white,
+      elevation: 10,
+      child: SizedBox(
+        height: 62,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(Icons.home),
-            Text('home', style: TextStyle(fontSize: 12))
+            _navItem(Icons.home_rounded, "home", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DashboardPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.savings_rounded, "budget", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BudgetPage(userId: widget.userId),
+                ),
+              );
+            }),
+            const SizedBox(width: 48),
+            _navItem(Icons.flag_rounded, "goals", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GoalsInfoPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.person_rounded, "profile", true, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePage(userId: widget.userId),
+                ),
+              );
+            }),
           ],
-        ), label: ""),
-        BottomNavigationBarItem(icon: Column(
-          children: [
-            Icon(Icons.savings),
-            Text('budget', style: TextStyle(fontSize: 12))
-          ],
-        ), label: ""),
-        BottomNavigationBarItem(
-          icon: SizedBox(
-            // height: 80,
-            child: Column(
-              children: [
-                Icon(Icons.qr_code_scanner, size: 45),
-                Text('scan label', style: TextStyle(fontSize: 12))
-              ],
+        ),
+      ),
+    );
+  }
+
+  Widget _navItem(
+    IconData icon,
+    String label,
+    bool isActive,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 26,
+            color: isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color:
+                  isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
             ),
           ),
-          label: "",
-        ),
-        BottomNavigationBarItem(icon: Column(
-          children: [
-            Icon(Icons.flag),
-            Text('goals', style: TextStyle(fontSize: 12))
-          ],
-        ), label: ""),
-        BottomNavigationBarItem(icon: Column(
-          children: [
-            Icon(Icons.person),
-            Text('profile', style: TextStyle(fontSize: 12))
-          ],
-        ), label: ""),
-      ],
+        ],
+      ),
     );
   }
 }

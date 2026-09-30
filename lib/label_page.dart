@@ -434,7 +434,7 @@ class _LabelPageState extends State<LabelPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Upload Nutrtion Facts Label')),
       body: Container(
-       decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -490,7 +490,15 @@ class _LabelPageState extends State<LabelPage> {
                         child: CircularProgressIndicator.adaptive(),
                       )
                       : _imageFile == null
-                      ? const Center(child: Text('No image selected', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)))
+                      ? const Center(
+                        child: Text(
+                          'No image selected',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
                       : SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -525,7 +533,13 @@ class _LabelPageState extends State<LabelPage> {
                               child: Text(
                                 recommendation,
                                 style: TextStyle(
-                                  color: (recommendation == 'Not Recommended') ? Colors.redAccent : (recommendation =='Slighty Recommended') ? Colors.yellow : Colors.greenAccent,
+                                  color:
+                                      (recommendation == 'Not Recommended')
+                                          ? Colors.redAccent
+                                          : (recommendation ==
+                                              'Slighty Recommended')
+                                          ? Colors.yellow
+                                          : Colors.greenAccent,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
                                 ),
@@ -922,6 +936,28 @@ class _LabelPageState extends State<LabelPage> {
                               ),
                             ),
                             const SizedBox(height: 12),
+                            // alternative products
+                              Container(
+                              padding: const EdgeInsets.all(8.0),
+                              color: Colors.white,
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Alternative Products',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                    Text(
+                                    "Oatmeal - High Protein and Dietary Fiber \nJack n' Jill Nova Multigrain Chips - High Dietary Fiber and Low Saturated Fat",
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 12),
                             ButtonTheme(
                               minWidth: 30,
                               height: 80,
@@ -933,8 +969,7 @@ class _LabelPageState extends State<LabelPage> {
                                   size: 30,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Colors.white, 
+                                  backgroundColor: Colors.white,
                                 ),
                                 label: const Text(
                                   'Upload Ingredients',

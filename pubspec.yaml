@@ -51,6 +51,8 @@ flutter:
     - assets/logo.png
     - assets/products.json  
     - assets/icons/target_check.png
+    # <a href="https://www.flaticon.com/free-icons/qr-code" title="qr code icons">Qr code icons created by shin_icons - Flaticon</a>
+    - assets/icons/scan_icon.png
 
   fonts:
     - family: Poppins

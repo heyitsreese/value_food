@@ -55,7 +55,34 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: _buildBottomNav(),
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: SizedBox(
+        width: 64,
+        height: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: const CircleBorder(
+            side: BorderSide(width: 3, color: const Color(0xFF2E7D32)),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LabelPage(userId: widget.userId),
+              ),
+            );
+          },
+          child: Image.asset(
+            'assets/icons/scan_icon.png',
+            color: const Color(0xFF2E7D32),
+            height: 32,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
       body: Container(
         decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
@@ -184,7 +211,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                           // color: Color.fromRGBO(121, 190, 75, 1),
                           color: Color(0xFF1B5E20),
                           fontSize: 20,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -231,7 +258,10 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
             children: [
               Text("Progress", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(width: 170),
-              Text('$progressPercent %', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                '$progressPercent %',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ],
           ),
 
@@ -279,7 +309,10 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.calendar_today_outlined, color: Color.fromRGBO(121, 190, 75, 100)),
+              Icon(
+                Icons.calendar_today_outlined,
+                color: Color.fromRGBO(121, 190, 75, 100),
+              ),
               Text(
                 " Timeline",
                 style: const TextStyle(
@@ -294,6 +327,7 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
           const SizedBox(height: 20),
           Row(
             children: [
+              // i put a date manually for now 
               Text(
                 "Target Date",
                 style: const TextStyle(
@@ -359,7 +393,10 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.recommend_outlined, color: Color.fromRGBO(121, 190, 75, 1)),
+              Icon(
+                Icons.recommend_outlined,
+                color: Color.fromRGBO(121, 190, 75, 1),
+              ),
               Text(
                 " Recommended Plan",
                 style: const TextStyle(
@@ -407,19 +444,17 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
                       ),
                     ),
 
-                    
-                   Text(
-                  'This is healthy and sustainable ', //test
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                    // fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
+                    Text(
+                      'This is healthy and sustainable ', //test
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ],
                 ),
-
               ),
             ],
           ),
@@ -428,64 +463,85 @@ class _GoalsInfoPageState extends State<GoalsInfoPage> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: 3,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-
-      onTap: (index) {
-        if (index == 0) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DashboardPage(userId: widget.userId),
-            ),
-          );
-        }
-
-        if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BudgetPage(userId: widget.userId),
-            ),
-          );
-        }
-
-        if (index == 2) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              // switch
-              builder: (_) => LabelPage(userId: widget.userId),
-            ),
-          );
-        }
-
-        if (index == 4) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProfilePage(userId: widget.userId),
-            ),
-          );
-        }
-      },
-
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.qr_code_scanner, size: 40),
-          label: "",
+  Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Colors.white,
+      elevation: 10,
+      child: SizedBox(
+        height: 62,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home_rounded, "home", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DashboardPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.savings_rounded, "budget", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BudgetPage(userId: widget.userId),
+                ),
+              );
+            }),
+            const SizedBox(width: 48),
+            _navItem(Icons.flag_rounded, "goals", true, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GoalsInfoPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.person_rounded, "profile", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePage(userId: widget.userId),
+                ),
+              );
+            }),
+          ],
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-      ],
+      ),
+    );
+  }
+
+  Widget _navItem(
+    IconData icon,
+    String label,
+    bool isActive,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 26,
+            color: isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color:
+                  isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
