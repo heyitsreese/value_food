@@ -30,9 +30,7 @@ class ValueFoodApp extends StatelessWidget {
     return MaterialApp(
       title: 'ValueFood',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Poppins',
-      ),
+      theme: ThemeData(fontFamily: 'Poppins'),
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -72,7 +70,7 @@ class ValueFoodApp extends StatelessWidget {
 //   }
 // }
 
-class LandingPage extends StatelessWidget{
+class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
   @override
@@ -80,163 +78,171 @@ class LandingPage extends StatelessWidget{
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFA5D6A7),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+            // padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: size.height * 0.03),
 
                 // LOGO
-
                 Image.asset(
-                  'assets/logo.png',
-                  height: size.height * 0.22,
+                  'assets/new_logo.png',
+                  height: MediaQuery.of(context).size.height / 5,
+                  width: MediaQuery.of(context).size.width / 2,
+                  fit: BoxFit.cover,
                 ),
 
                 SizedBox(height: 20),
 
                 // TITLE
-
-                Text(
-                  "Your Smart Nutrition and\nBudget Companion",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 10,
-                        color: Colors.black26,
-                        offset: Offset(0,4),
-                      )
+                RichText(
+                  text: TextSpan(
+                    text: 'Value',
+                    style: TextStyle(
+                      color: Color.fromRGBO(32, 101, 137, 100),
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                      fontFamily: 'Poppins-Bold',
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Food',
+                        style: TextStyle(
+                          color: Color.fromRGBO(122, 184, 77, 100),
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
-                SizedBox(height: 30),
-
-                // FEATURES
-
-                FeatureCard(
-                  icon: Icons.camera_alt,
-                  title: "Scan Nutrition Labels",
-                  subtitle: "Instantly capture and read nutritional facts",
-                ),
-
-                SizedBox(height: 15),
-
-                FeatureCard(
-                  icon: Icons.track_changes,
-                  title: "AI Diet Recommendations",
-                  subtitle: "Get personalized meal plans based on your budget",
-                ),
-
-                SizedBox(height: 15),
-
-                FeatureCard(
-                  icon: Icons.shield,
-                  title: "Allergen Warnings",
-                  subtitle: "Stay safe with automatic allergy alerts",
-                ),
-
-                SizedBox(height: 30),
-                SizedBox(height: 10),
-
-                // 🔘 GET STARTED BUTTON
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF2E7D32),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 6,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_)=>SignupPage()),
-                      );
-                    },
-                    child: Text(
-                      "Get Started →",
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        fontSize: 18),
-                    ),
-                  ),
-                ),
-                
-                SizedBox(height: 15),
-
-                // 🔁 LOGIN BUTTON
-                SizedBox(
-                  width: double.infinity,
-                  height: 55,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Color(0xFFA7D489), width: 1.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_)=>LoginPage()),
-                      );
-                    },
-                    child: Text(
-                      "Already have an account? Log In",
-                      style: TextStyle(
-                        color: Color(0xFF2E7D32),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 25),
-
-                // 🧾 FOOTER TEXT
+                // under title text
                 Text(
-                  "Track. Budget. Eat Healthy.",
-                  style: TextStyle(
-                    color: Color(0xFF1B5E20),
-                    fontSize: 14,
-                  ),
+                  'Smart Choice. Safe Nutrition. Maximum Value.',
+                  style: TextStyle(color: Color.fromRGBO(46, 125, 50, 100)),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: 50),
 
-                Text(
-                  "© 2026 ValueFood",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12,
+                // green card start
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(122, 184, 77, 100),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(40.0),
+                      topLeft: Radius.circular(40.0),
+                    ),
+                  ),
+                  height: MediaQuery.of(context).size.height / 1.5,
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      SizedBox(height: 50),
+                      Text(
+                        'Your Smart Nutrition and \n \t \t \t Budget Companion',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      FeatureCard(
+                        icon: Icons.camera_alt,
+                        title: "Scan Nutrition Labels",
+                        subtitle:
+                            "Instantly capture and gives the nutritional facts",
+                      ),
+                      SizedBox(height: 20),
+
+                      FeatureCard(
+                        icon: Icons.track_changes,
+                        title: "Diet Recommendations",
+                        subtitle:
+                            "Personalized meal plans based on your scanned items",
+                      ),
+
+                      SizedBox(height: 20),
+
+                      FeatureCard(
+                        icon: Icons.shield,
+                        title: "Allergen Warnings",
+                        subtitle: "Takes note of your allergies",
+                      ),
+
+                      SizedBox(height: 50),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF2E7D32),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 6,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => SignupPage()),
+                            );
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'Get Started',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '→',
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.3,
+                        height: 60,
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.white, width: 1.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => LoginPage()),
+                            );
+                          },
+                          child: Text(
+                            "Already have an account? Log In",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-
-                SizedBox(height: 20),
               ],
             ),
           ),
@@ -251,7 +257,8 @@ class FeatureCard extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const FeatureCard({super.key, 
+  const FeatureCard({
+    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -260,23 +267,17 @@ class FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width / 1.3,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          )
-        ],
       ),
       child: Row(
         children: [
           CircleAvatar(
             backgroundColor: Color(0xFFE8F5E9),
-            child: Icon(icon, color: Color(0xFF2E7D32)),
+            child: Icon(icon, color: Color.fromRGBO(138, 207, 124, 100)),
           ),
           SizedBox(width: 15),
           Expanded(
@@ -286,21 +287,19 @@ class FeatureCard extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1B5E20),
+                    fontWeight: FontWeight.w600,
+                    // color: Color(0xFF1B5E20),
+                    color: Colors.black,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.black54,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.black54),
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

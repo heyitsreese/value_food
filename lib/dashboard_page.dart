@@ -4,6 +4,12 @@ import 'package:intl/intl.dart';
 import 'profile_page.dart';
 import 'add_transaction_page.dart';
 
+import 'goals_page.dart';
+import 'goals_info_page.dart';
+
+import 'budget_page.dart';
+import 'label_page.dart';
+
 class DashboardPage extends StatefulWidget {
   final String userId;
 
@@ -61,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return {
             "type": d['type'],
             "amount": (d['amount'] ?? 0).toDouble(),
-            "icon": d['type'] == "Food"
+            "icon": d['type'] == "Lunch"
                 ? Icons.fastfood
                 : Icons.shopping_cart,
           };
@@ -79,18 +85,36 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _buildBottomNav(),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFA5D6A7),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: SizedBox(
+        width: 64,
+        height: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: const CircleBorder(
+            side: BorderSide(width: 3, color: const Color(0xFF2E7D32)),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LabelPage(userId: widget.userId),
+              ),
+            );
+          },
+          child: Image.asset(
+            'assets/icons/scan_icon.png',
+            color: const Color(0xFF2E7D32),
+            height: 32,
           ),
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
+      body: Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: RefreshIndicator(
             onRefresh: loadDashboardData,
@@ -131,7 +155,7 @@ class _DashboardPageState extends State<DashboardPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Hello, $username! 👋",
+          "Hey, $username!",
           style: const TextStyle(
             fontSize: 26,
             fontWeight: FontWeight.bold,
@@ -143,7 +167,7 @@ class _DashboardPageState extends State<DashboardPage> {
           "Let’s manage your food & budget today",
           style: TextStyle(
             fontSize: 16,
-            color: Color(0xFF4E6E58),
+            color: Colors.white,
           ),
         ),
       ],
@@ -168,7 +192,7 @@ class _DashboardPageState extends State<DashboardPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Current shopping budget",
+            "Monthly Budget",
             style: TextStyle(
               fontSize: 16,
               color: Color(0xFF4E6E58),
@@ -246,7 +270,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 "Recent Activity",
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF1B5E20),
                 ),
               ),
@@ -268,7 +292,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 child: Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF81C784),
+                    color: Color(0xFF2E7D32),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Icon(
@@ -302,11 +326,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
                 return ListTile(
                   leading: Icon(item["icon"], color: Colors.green),
-                  title: Text(item["type"]),
+                  title: Text(item["type"], style: TextStyle(color: Color(0xFF2E7D32), fontSize: 24, fontWeight: FontWeight.bold)),
                   trailing: Text(
                     pesoFormat.format(item["amount"]),
                     style: const TextStyle(
+                      color: Color(0xFF2E7D32),
                       fontFamily: 'sans-serif', // ✅ peso fix
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 );
@@ -317,31 +344,85 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,   
-      showUnselectedLabels: false,
+  Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Colors.white,
+      elevation: 10,
+      child: SizedBox(
+        height: 62,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home_rounded, "home", true, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DashboardPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.savings_rounded, "budget", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BudgetPage(userId: widget.userId),
+                ),
+              );
+            }),
+            const SizedBox(width: 48),
+            _navItem(Icons.flag_rounded, "goals", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GoalsInfoPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.person_rounded, "profile", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePage(userId: widget.userId),
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
 
-      onTap: (index) {
-        if (index == 4) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => ProfilePage(userId: widget.userId),
+  Widget _navItem(
+    IconData icon,
+    String label,
+    bool isActive,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 26,
+            color: isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color:
+                  isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
             ),
-          );
-        }
-      },
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

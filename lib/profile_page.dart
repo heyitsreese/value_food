@@ -6,6 +6,11 @@ import 'dashboard_page.dart';
 import 'edit_profile_page.dart';
 import 'login_page.dart';
 
+//import 'goals_page.dart';
+import 'goals_info_page.dart';
+import 'budget_page.dart';
+import 'label_page.dart';
+
 class ProfilePage extends StatefulWidget {
   final String userId;
 
@@ -37,10 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> loadProfile() async {
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(widget.userId)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.userId)
+            .get();
 
     final data = doc.data();
 
@@ -48,8 +54,12 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         String fullName = data['name'] ?? "";
 
-        firstName = data['firstName'] ?? (fullName.split(" ").isNotEmpty ? fullName.split(" ")[0] : "");
-        lastName = data['lastName'] ?? (fullName.split(" ").length > 1 ? fullName.split(" ")[1] : "");
+        firstName =
+            data['firstName'] ??
+            (fullName.split(" ").isNotEmpty ? fullName.split(" ")[0] : "");
+        lastName =
+            data['lastName'] ??
+            (fullName.split(" ").length > 1 ? fullName.split(" ")[1] : "");
         age = data['age'] ?? 0;
         height = (data['height'] ?? 0).toDouble();
         weight = (data['weight'] ?? 0).toDouble();
@@ -87,27 +97,37 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: _buildBottomNav(),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF81C784),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+           backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
+      floatingActionButton: SizedBox(
+        width: 64,
+        height: 64,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white,
+          elevation: 4,
+          shape: const CircleBorder(side: BorderSide(width: 3,color: const Color(0xFF2E7D32))),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => LabelPage(userId: widget.userId),
+              ),
+            );
+          },
+          child: Image.asset('assets/icons/scan_icon.png', color:const Color(0xFF2E7D32), height: 32)
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomAppBar(),
+      body: Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(122, 184, 77, 100)),
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                  ),
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
@@ -123,7 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 20),
                         _buildAllergies(),
 
-                        // 👇 THIS FILLS REMAINING SPACE NICELY
                         const SizedBox(height: 20),
                       ],
                     ),
@@ -155,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(height: 5),
             Text(
               "Manage your personal information",
-              style: TextStyle(color: Color(0xFF1B5E20)),
+              style: TextStyle(color: Colors.white),
             ),
           ],
         ),
@@ -165,22 +184,24 @@ class _ProfilePageState extends State<ProfilePage> {
           icon: const Icon(Icons.logout, color: Colors.white, size: 28),
           onPressed: () async {
             // Optional confirmation
-            bool confirm = await showDialog(
+            bool confirm =
+                await showDialog(
                   context: context,
-                  builder: (_) => AlertDialog(
-                    title: const Text("Logout"),
-                    content: const Text("Are you sure you want to logout?"),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text("Cancel"),
+                  builder:
+                      (_) => AlertDialog(
+                        title: const Text("Logout"),
+                        content: const Text("Are you sure you want to logout?"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text("Logout"),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text("Logout"),
-                      ),
-                    ],
-                  ),
                 ) ??
                 false;
 
@@ -204,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.black.withOpacity(0.08),
             blurRadius: 15,
             offset: const Offset(0, 5),
-          )
+          ),
         ],
       ),
       child: child,
@@ -253,25 +274,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 icon: const Icon(Icons.edit),
                 label: const Text("Edit"),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Age\n$age years"),
-              Text("Height\n${height.toDouble()}\""),
+              Text("Age\n$age years", style: TextStyle(fontWeight: FontWeight.w600)),
+              Text("Height\n${height.toDouble()}\"", style: TextStyle(fontWeight: FontWeight.w600)),
             ],
           ),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Weight\n${weight.toInt()} lbs"),
+              Text("Weight\n${weight.toInt()} lbs", style: TextStyle(fontWeight: FontWeight.w600)),
               Text(
                 "Budget\n${pesoFormat.format(budget)}",
-                style: const TextStyle(fontFamily: 'sans-serif'),
+                style: const TextStyle(fontFamily: 'sans-serif', fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -288,16 +309,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Body Mass Index (BMI)"),
+              const Text("Body Mass Index (BMI)", style: TextStyle(fontWeight: FontWeight.w600)),
               const SizedBox(height: 10),
               Text(
                 bmi.toStringAsFixed(1),
                 style: const TextStyle(fontSize: 32),
               ),
-              Text(
-                bmiLabel,
-                style: const TextStyle(color: Colors.green),
-              ),
+              Text(bmiLabel, style: const TextStyle(color: Colors.green, fontWeight: FontWeight.w600)),
             ],
           ),
           const Text(
@@ -311,21 +329,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildBudget() {
     return _card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text("Grocery Budget"),
-          const SizedBox(height: 10),
-          Text(
-            pesoFormat.format(budget),
-            style: const TextStyle(
-              fontFamily: 'sans-serif',
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Grocery Budget", style: TextStyle(fontWeight: FontWeight.w600)),
+              const SizedBox(height: 10),
+              Text(
+                pesoFormat.format(budget),
+                style: const TextStyle(
+                  fontFamily: 'sans-serif',
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+              const Text("Available per shopping trip"),
+            ],
           ),
-          const Text("Available per shopping trip"),
         ],
       ),
     );
@@ -333,57 +356,126 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildAllergies() {
     return _card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Food Allergies",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            children: allergies.map((a) {
-              return Padding(
-                padding: const EdgeInsets.all(4),
-                child: Chip(
-                  label: Text(a),
-                  backgroundColor: Colors.red.shade100,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(child: Icon(Icons.warning, size: 18, color: Colors.red)),
+                    TextSpan(
+                      text: " Food Allergies",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            }).toList(),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                children:
+                    allergies.map((a) {
+                      return Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Chip(
+                          label: Text(a),
+                          backgroundColor: Colors.red.shade100,
+                        ),
+                      );
+                    }).toList(),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: 4,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.green,
-      unselectedItemColor: Colors.grey,
-      showSelectedLabels: false,   
-      showUnselectedLabels: false,
+ Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      color: Colors.white,
+      elevation: 10,
+      child: SizedBox(
+        height: 62,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home_rounded, "home", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DashboardPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.savings_rounded, "budget", false, () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => BudgetPage(userId: widget.userId),
+                ),
+              );
+            }),
+            const SizedBox(width: 48),
+            _navItem(Icons.flag_rounded, "goals", false, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => GoalsInfoPage(userId: widget.userId),
+                ),
+              );
+            }),
+            _navItem(Icons.person_rounded, "profile", true, () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePage(userId: widget.userId),
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
 
-      onTap: (index) {
-        if (index == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => DashboardPage(userId: widget.userId),
+  Widget _navItem(
+    IconData icon,
+    String label,
+    bool isActive,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 26,
+            color: isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.w700 : FontWeight.w400,
+              color:
+                  isActive ? const Color(0xFF2E7D32) : const Color(0xFFB0BEC5),
             ),
-          );
-        }
-      },
-
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.savings), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.flag), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

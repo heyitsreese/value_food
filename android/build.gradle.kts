@@ -23,3 +23,16 @@ subprojects {
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
+
+// added for python
+// buildscript {
+//     repositories {
+//         google()
+//         mavenCentral()
+//         maven { url "https://chaquo.com/maven" }
+//     }
+//     dependencies {
+//         classpath "com.chaquo.python:gradle:13.0.0"
+//     }
+// }
+

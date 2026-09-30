@@ -33,25 +33,25 @@ class _SignupPageState extends State<SignupPage> {
         lastNameController.text.isEmpty ||
         emailController.text.isEmpty ||
         passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please fill all fields")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Please fill all fields")));
       return;
     }
 
     if (passwordController.text != confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwords do not match")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Passwords do not match")));
       return;
     }
 
     try {
-      final userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
 
       if (!mounted) return;
 
@@ -61,19 +61,20 @@ class _SignupPageState extends State<SignupPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => GetInfoPage(
-            userId: userId,
-            firstName: firstNameController.text.trim(),
-            lastName: lastNameController.text.trim(),
-          ),
+          builder:
+              (_) => GetInfoPage(
+                userId: userId,
+                firstName: firstNameController.text.trim(),
+                lastName: lastNameController.text.trim(),
+              ),
         ),
       );
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
     }
   }
 
@@ -86,194 +87,200 @@ class _SignupPageState extends State<SignupPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFA5D6A7),
-              Color(0xFFE8F5E9),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: SafeArea(
           child: SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: size.height),
               child: IntrinsicHeight(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: size.width * 0.06,
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: size.height * 0.05),
+                // padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+                child: Column(
+                  children: [
+                    SizedBox(height: size.height * 0.05),
 
-                      // 🧾 CARD
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(24),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 15,
-                              offset: Offset(0, 5),
-                            )
-                          ],
+                    // logo
+                    Image.asset(
+                      'assets/new_logo.png',
+                      height: MediaQuery.of(context).size.height / 5,
+                      width: MediaQuery.of(context).size.width / 2,
+                      fit: BoxFit.cover,
+                    ),
+
+                    RichText(
+                      text: TextSpan(
+                        text: 'Value',
+                        style: TextStyle(
+                          color: Color.fromRGBO(32, 101, 137, 100),
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          fontFamily: 'Poppins-Bold',
                         ),
-                        child: Column(
-                          children: [
-                            const CircleAvatar(
-                              radius: 35,
-                              backgroundColor: Color(0xFFA5D6A7),
-                              child: Icon(
-                                Icons.person_add,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Food',
+                            style: TextStyle(
+                              color: Color.fromRGBO(122, 184, 77, 100),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // under title text
+                    Text(
+                      'Smart Choice. Safe Nutrition. Maximum Value.',
+                      style: TextStyle(color: Color.fromRGBO(46, 125, 50, 100)),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    // green card
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(122, 184, 77, 100),
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(40.0),
+                          topLeft: Radius.circular(40.0),
+                        ),
+                      ),
+                      height: MediaQuery.of(context).size.height / 1.2,
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 50),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Create Account',
+                              style: TextStyle(
                                 color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            const Text(
-                              "Create Account",
-                              style: TextStyle(
-                                fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF565656),
+                                fontSize: 22,
                               ),
                             ),
-
-                            const SizedBox(height: 5),
-
-                            const Text(
-                              "Start your nutrition tracking journey",
+                          ),
+                          SizedBox(height: 20),
+                          RichText(
+                            text: TextSpan(
+                              text: 'Start your nutrition tracking journey',
                               style: TextStyle(
-                                color: Color(0xFF565656),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
                             ),
+                          ),
+                          const SizedBox(height: 25),
 
-                            const SizedBox(height: 25),
+                          CustomTextField(
+                            label: "First Name",
+                            hint: "John",
+                            icon: Icons.person,
+                            controller: firstNameController,
+                          ),
 
-                            // 👤 FIRST + LAST NAME
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: CustomTextField(
-                                    label: "First Name",
-                                    hint: "John",
-                                    icon: Icons.person,
-                                    controller: firstNameController,
-                                  ),
+                          const SizedBox(height: 15),
+
+                          CustomTextField(
+                            label: "Last Name",
+                            hint: "Doe",
+                            icon: Icons.person,
+                            controller: lastNameController,
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          CustomTextField(
+                            label: "Email",
+                            hint: "your@email.com",
+                            icon: Icons.email,
+                            controller: emailController,
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          CustomTextField(
+                            label: "Password",
+                            hint: "••••••••",
+                            icon: Icons.lock,
+                            isPassword: true,
+                            controller: passwordController,
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          CustomTextField(
+                            label: "Confirm Password",
+                            hint: "••••••••",
+                            icon: Icons.lock,
+                            isPassword: true,
+                            controller: confirmPasswordController,
+                          ),
+
+                          const SizedBox(height: 30),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 1.3,
+                            height: 60,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF2E7D32),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: CustomTextField(
-                                    label: "Last Name",
-                                    hint: "Doe",
-                                    icon: Icons.person,
-                                    controller: lastNameController,
+                                elevation: 6,
+                              ),
+                              onPressed: signUpUser,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: 'Next',
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
                                   ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '→',
+                                      style: TextStyle(fontSize: 25),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
+                          ),
+                          const SizedBox(height: 40),
 
-                            const SizedBox(height: 15),
-
-                            CustomTextField(
-                              label: "Email",
-                              hint: "your@email.com",
-                              icon: Icons.email,
-                              controller: emailController,
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            CustomTextField(
-                              label: "Password",
-                              hint: "••••••••",
-                              icon: Icons.lock,
-                              isPassword: true,
-                              controller: passwordController,
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            CustomTextField(
-                              label: "Confirm Password",
-                              hint: "••••••••",
-                              icon: Icons.lock,
-                              isPassword: true,
-                              controller: confirmPasswordController,
-                            ),
-
-                            const SizedBox(height: 25),
-
-                            SizedBox(
-                              width: double.infinity,
-                              height: 50,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF88B967),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                ),
-                                onPressed: signUpUser,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Already have an account? ",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const LoginPage(),
+                                    ),
+                                  );
+                                },
                                 child: const Text(
-                                  "Create Account",
+                                  "Log In",
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ),
-
-                            const SizedBox(height: 15),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Already have an account? ",
-                                  style: TextStyle(color: Color(0xFF9C9C9C)),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const LoginPage(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Log In",
-                                    style: TextStyle(
-                                      color: Color(0xFF2E7D32),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
-
-                      const Spacer(),
-
-                      const Text(
-                        "© 2026 ValueFood",
-                        style: TextStyle(color: Colors.black54, fontSize: 12),
-                      ),
-
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),
@@ -302,33 +309,36 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF424242),
-          ),
-        ),
-        const SizedBox(height: 6),
-        TextField(
-          controller: controller,
-          obscureText: isPassword,
-          decoration: InputDecoration(
-            prefixIcon: Icon(icon),
-            hintText: hint,
-            filled: true,
-            fillColor: const Color(0xFFF5F5F5),
-            contentPadding: const EdgeInsets.symmetric(vertical: 14),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide.none,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 1.3,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
           ),
-        ),
-      ],
+          const SizedBox(height: 6),
+          TextField(
+            controller: controller,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              prefixIcon: Icon(icon),
+              hintText: hint,
+              filled: true,
+              fillColor: const Color(0xFFF5F5F5),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

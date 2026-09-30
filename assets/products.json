@@ -1,0 +1,256 @@
+[
+  {
+    "barcode": "750515018402",
+    "product_name": "Skyflakes Cracker",
+    "description": "Wheat Flour, Coconut Oil, Vegetable Shortening, Iodized Salt, Sugar, Sodium Bicarbonate, Yeast",
+    "nutri_facts": {
+      "energy_kcal": 492,
+      "fat_g": 20,
+      "saturated_fat_g": 16,
+      "carbohydrates_g": 68,
+      "sugars_g": 8,
+      "fiber_g": 4,
+      "protein_g": 12,
+      "salt_g": 1.12,
+      "vitamin_a_g": 0.0000593,
+      "calcium_g": 0.0228,
+      "iron_g": 0.0052
+    },
+    "allergens": [],
+    "image_link": "https://images.barcodelookup.com/4811/48113697-1.jpg"
+  },
+  {
+    "barcode": "4800016644801",
+    "product_name": "Jack 'n Jill Piattos",
+    "description": "Potato, Vegetable Oil, Cheese Flavoring, Antioxidant, Flavors, Annatto, Flavor Enhancer. Allergen Information: Contains Wheat, Soybean, Milk or Milk Products, Sulphites. May contain fish products.",
+    "nutri_facts": {
+      "energy_kcal": 150,
+      "fat_g": 7,
+      "saturated_fat_g": 3.5,
+      "trans_fat_g": 0,
+      "cholesterol_mg": 0,
+      "sodium_mg": 170,
+      "carbohydrates_g": 19,
+      "fiber_g": 1,
+      "sugars_g": 2,
+      "added_sugars_g": 1,
+      "protein_g": 2,
+      "vitamin_d_mcg": 0,
+      "calcium_mg": 10,
+      "iron_mg": 4.5,
+      "potassium_mg": 280
+    },
+    "allergens": ["Wheat", "Soybean", "Milk"],
+    "image_link": ""
+  },
+  {
+    "barcode": "748485803197",
+    "product_name": "Argentina Corned Beef",
+    "category": "Canned foods, Meats and their products, Meals, Meats, Meals with meat, Beef dishes, Canned meats, Corned beef",
+    "description": "Cooked Corned Beef (beef Cured With Water, Salt, Sugar, Sodium Phosphates, Sodium Nitrite), Beef Broth, Beef, Textured Soy Concentrate (caramel Color Added), Salt, Monosodium Glutamate, Flavor (hydrolyzed Soy Protein, Corn Protein And Wheat Gluten, Medium Chain Triglycerides, Sesame Oil, Yeast Extract), Garlic Powder, Sugar, Dextrose, Spice, Onion Powder, Xanthan Gum.",
+    "nutri_facts": {
+      "energy_kcal": 200,
+      "fat_g": 10.91,
+      "saturated_fat_g": 5.45,
+      "trans_fat_g": 0.91,
+      "cholesterol_g": 0.064,
+      "carbohydrates_g": 1.82,
+      "sugars_g": 1.82,
+      "protein_g": 21.82,
+      "salt_g": 1.8625,
+      "iron_g": 0.00655
+    },
+    "allergens": ["Beef", "Gluten", "Sesame seeds", "Soybeans"],
+    "image_link": "https://images.barcodelookup.com/6218/62184057-1.jpg"
+  },
+  {
+    "barcode": "037600240345",
+    "product_name": "Spam Hormel – 340g",
+    "category": "Canned foods, Meats and their products, Meats, Canned meats, Luncheon meat",
+    "description": "Pork, Water, Modified Potato Starch, Salt, Sugar, Sodium Nitrite",
+    "nutri_facts": {
+      "energy_kcal": 501,
+      "fat_g": 23.2,
+      "saturated_fat_g": 11.4,
+      "carbohydrates_g": 67,
+      "sugars_g": 25.5,
+      "protein_g": 6.1,
+      "salt_g": 0.52
+    },
+    "allergens": [],
+    "image_link": "https://images.barcodelookup.com/81546/815466061-1.jpg"
+  },
+  {
+    "barcode": "4807770270024",
+    "product_name": "Lucky Me Chicken – 55g",
+    "category": "Plant-based foods and beverages, Plant-based foods, Dried products, Pastas, Dried products to be rehydrated, Noodles, Instant noodles, Instant noodle soups, Chicken-noodles",
+    "description": "Noodles: Wheat Flour, Vegetable Oil (Palm Oil with Green Tea Extract), Iodized Salt, Sodium Polyphosphate (Humectant), Acidity Regulators (Sodium Carbonate, Potassium Carbonate), Sodium Carboxymethyl Cellulose (Thickener), Artificial Colors (Tartrazine, Sunset Yellow). Seasonings: Iodized Salt, Flavor Enhancers (Monosodium L-Glutamate, Disodium 5'-Inosinate, Disodium 5'-Guanylate), Whey Powder, Sugar, Chicken Flavors, Spices, Cornstarch, Hydrolyzed Vegetable Protein, Dehydrated Chives, Tartrazine (Artificial Color), Vitamin A (Retinyl Acetate).",
+    "nutri_facts": {
+      "energy_kcal": 250,
+      "fat_g": 10,
+      "saturated_fat_g": 4.5,
+      "carbohydrates_g": 34,
+      "sugars_g": 1,
+      "fiber_g": 1,
+      "protein_g": 6,
+      "salt_g": 3.75,
+      "sodium_g": 1.5,
+      "potassium_g": 0.09,
+      "calcium_g": 0.02,
+      "iron_g": 0.002
+    },
+    "allergens": ["Gluten", "Milk"],
+    "image_link": ""
+  },
+  {
+    "barcode": "4800361413480",
+    "product_name": "Milo – Nestle – 24g",
+    "category": "Beverages and beverages preparations, Beverages, Flavoured Drinks",
+    "description": "Milk, Whey Powder, Protomalt Malt Extract, Barley, Starch, Sugar, Vegetable Oil, Cocoa Powder, Calcium Carbonate, Disodium Phosphate, Iron Pyrophosphate, Vitamins C, B3, B6, B2, D, B12, Iodized Salt, Sweetener (Steviol Glycoside).",
+    "nutri_facts": {
+      "energy_kcal": 391,
+      "fat_g": 10.42,
+      "carbohydrates_g": 60.83,
+      "sugars_g": 45.42,
+      "fiber_g": 3.33,
+      "protein_g": 13.33,
+      "salt_g": 0.6875,
+      "sodium_g": 0.275,
+      "vitamin_d_g": 0.000006,
+      "vitamin_c_g": 0.0733,
+      "calcium_g": 0.854,
+      "phosphorus_g": 0.571,
+      "iron_g": 0.01458
+    },
+    "allergens": ["Gluten", "Milk", "Soybeans"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/036/141/3480/front_en.59.400.jpg"
+  },
+  {
+    "barcode": "4808680021355",
+    "product_name": "Lady's Choice Mayonnaise – 80ml",
+    "category": "Condiments, Sauces, Mayonnaises, Groceries",
+    "description": "Soybean Oil, Water, Eggs, Sugar, Vinegar, Iodized Salt, Stabilizer (Propylene Glycol Alginate), Spices, Preservative (Potassium Sorbate), Nature Identical Flavor, Color (Beta Carotene), Calcium Disodium EDTA added to protect flavor.",
+    "nutri_facts": {
+      "energy_kcal": 105,
+      "fat_g": 11,
+      "saturated_fat_g": 2,
+      "cholesterol_g": 0.01,
+      "carbohydrates_g": 1,
+      "sugars_g": 1,
+      "salt_g": 0.16
+    },
+    "allergens": ["Eggs", "Soybeans"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/868/002/1355/front_en.36.400.jpg"
+  },
+  {
+    "barcode": "4806504710126",
+    "product_name": "Mega Sardines in Tomato Sauce – 155g",
+    "category": "Seafood, Fishes and their products, Canned foods, Fishes, Fatty fishes, Canned fishes, Sardines, Canned sardines, Sardines in tomato sauce",
+    "description": "Sardines, Water, Tomato Paste, Thickener (Modified Starch, Xanthan Gum), Iodized Salt, Sugar, Chili Powder, Garlic Powder, Onion Powder.",
+    "nutri_facts": {
+      "energy_kcal": 90,
+      "fat_g": 4.54,
+      "saturated_fat_g": 1.82,
+      "cholesterol_g": 0.0454,
+      "carbohydrates_g": 3.63,
+      "sugars_g": 1.81
+    },
+    "allergens": ["Fish"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/650/471/0126/front_en.30.400.jpg"
+  },
+  {
+    "barcode": "4800194104869",
+    "product_name": "Oishi Crispy Patata – 24g",
+    "category": "Plant-based foods and beverages, Plant-based foods, Snacks, Cereals and potatoes, Salty snacks, Appetizers, Chips and fries, Crisps, Potatoes and their products, Potato crisps, Potato Snacks, Savory Snacks",
+    "description": "Wheat Flour, Dehydrated Potatoes, Vegetable Oil (Coconut and/or Palm Olein), Sugar, Corn, Iodized Salt, Tapioca Starch, Flavor Enhancers (Monosodium Glutamate), Baking Powder, Milk Powder, Artificial Flavors, Hydrolyzed Soy Protein, Disodium Inosinate, Disodium Guanylate, Antioxidant (TBHQ).",
+    "nutri_facts": {
+      "energy_kcal": 625,
+      "fat_g": 29.17,
+      "saturated_fat_g": 16.67,
+      "carbohydrates_g": 83.33,
+      "sugars_g": 8.33,
+      "protein_g": 8.33,
+      "salt_g": 3.3,
+      "sodium_g": 1.33
+    },
+    "allergens": ["Gluten", "Milk", "Soybeans"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/019/410/4869/front_en.23.400.jpg"
+  },
+  {
+    "barcode": "4800016644504",
+    "product_name": "Piattos Cheese Flavored Potato Crisps – 85g",
+    "category": "Plant-based foods and beverages, Plant-based foods, Snacks, Cereals and potatoes, Salty snacks, Appetizers, Chips and fries, Crisps, Potato crisps, Corn chips",
+    "description": "Dehydrated Potatoes, Potato Starch, Vegetable Oil (may contain one or more of the following: Palm Olein, Palm, Corn and/or Coconut Oil), Cheese Powder (Whey, Cheddar Cheese [Cultured Pasteurized Milk, Salt and Enzymes], Butter or Soybean Oil, Dry Buttermilk, Natural Flavour, Disodium Phosphate and Colours), Sugar, Monosodium Glutamate, Iodized Salt, Potassium Chloride, Artificial Flavour, Natural Spices, Mono- and Diglycerides (from Soybean), Citric Acid, Antioxidant.",
+    "nutri_facts": {
+      "energy_kcal": 500,
+      "fat_g": 20,
+      "saturated_fat_g": 10,
+      "carbohydrates_g": 70,
+      "sugars_g": 7,
+      "protein_g": 3,
+      "salt_g": 1
+    },
+    "allergens": ["Milk", "Soybeans"],
+    "image_link": "https://images.barcodelookup.com/3182/31820592-1.jpg"
+  },
+  {
+    "barcode": "4807770273674",
+    "product_name": "Lucky Me Pancit Canton Kalamansi – 80g",
+    "category": "Plant-based foods and beverages, Plant-based foods, Meals, Pasta dishes, Dried products, Pastas, Dried products to be rehydrated, Noodles, Instant noodles, Instant pasta",
+    "description": "Wheat Flour, Non-hydrogenated Vegetable Oil (Palm Oil with Green Tea Extract), Iodized Salt, Acidity Regulators (Sodium Carbonate, Potassium Carbonate), Cellulose Gum (Thickener), Sodium Polyphosphate (Humectant), Artificial Colors (Tartrazine, Sunset Yellow), Dehydrated Carrots, Dehydrated Spring Onions, Spice (Garlic), Disodium 5'-Inosinate, Disodium 5'-Guanylate, Natural and Artificial Meat Flavors, Sugar, Citric Acid, Seasoning (Maltodextrin, Iodized Salt), Flavor Enhancers (Monosodium L-Glutamate, Disodium 5'-Guanylate), Silicon Dioxide (Anticaking Agent), Soy Sauce, Caramel IV (Color), Guar Gum (Stabilizer), Acidity Regulators (L-Lactic Acid, Citric Acid), Potassium Sorbate (Preservative), Elemental Iron, Vitamin A (Retinyl Acetate).",
+    "nutri_facts": {
+      "energy_kcal": 351,
+      "fat_g": 14,
+      "saturated_fat_g": 8,
+      "carbohydrates_g": 48,
+      "sugars_g": 3,
+      "salt_g": 2.495
+    },
+    "allergens": ["Crustaceans", "Eggs", "Gluten", "Milk", "Peanuts", "Soybeans", "Sulphur dioxide and sulphites"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/777/027/3674/front_en.63.400.jpg"
+  },
+  {
+    "barcode": "4808887010015",
+    "product_name": "PureFoods Corned Beef – 210g",
+    "category": "Meals, Meats and their products, Beef and its products, Prepared meats, Meals with meat, Beef dishes, Prepared beef meats, Corned beef",
+    "description": "Cooked Beef, Beef Broth, Iodized Salt, Sugar, Monosodium Glutamate (Flavor Enhancer), Sodium Phosphate (Acidity Regulator), Flavors, Sodium Nitrite (Color Retention Agent), Sodium Erythorbate (Reducing Agent).",
+    "nutri_facts": {
+      "energy_kcal": 167,
+      "fat_g": 6.1,
+      "carbohydrates_g": 1,
+      "sugars_g": 1,
+      "protein_g": 10
+    },
+    "allergens": ["Milk"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/888/701/0015/front_en.jpg"
+  },
+  {
+    "barcode": "4800024037480",
+    "product_name": "Del Monte Fiesta Fruit Cocktail in Extra Light Syrup – 836g",
+    "category": "Plant-based foods and beverages, Plant-based foods, Fruits and vegetables based foods, Fruits based foods, Fruit salads, Fruit salads in syrup, Canned fruit cocktail in light syrup",
+    "description": "Fruit Cocktail (Peaches, Pears, Grapes, Pineapple, Cherries), Water, Sugar.",
+    "nutri_facts": {
+      "energy_kcal": 50,
+      "carbohydrates_g": 12.9,
+      "sugars_g": 10,
+      "fiber_g": 0.714,
+      "salt_g": 0.0181
+    },
+    "allergens": ["Milk", "Soybeans"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/002/403/7480/front_en.4.400.jpg"
+  },
+  {
+    "barcode": "4808887010077",
+    "product_name": "Purefoods Corned Beef (Classic) – 150g",
+    "category": "Meats and their products, Beef and its products, Prepared meats, Prepared beef meats, Corned beef, Canned Goods",
+    "description": "Beef, Salt, Sugar, Sodium Nitrite, Water, Food Starch, Modified Starch, Monosodium Glutamate, Spices.",
+    "nutri_facts": {
+      "energy_kcal": 96,
+      "fat_g": 6.1,
+      "carbohydrates_g": 1,
+      "protein_g": 10
+    },
+    "allergens": ["Soybeans"],
+    "image_link": "https://images.openfoodfacts.org/images/products/480/888/701/0077/front_en.3.400.jpg"
+  }
+]
